@@ -31,4 +31,9 @@ class SignUpController extends Controller
 
         return $this->failed(data: $data, message: 'Wrong email or password', status: ResponseAlias::HTTP_UNAUTHORIZED);
     }
+
+    public function signUpIndex()
+    {
+        return view('authentication.signup');
+    }
 }

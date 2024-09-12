@@ -24,11 +24,16 @@ class ResetPasswordController extends Controller
         return $this->failed($data);
     }
 
-    public function reset_password(ResetPasswordRequest $request) {
+    public function resetPassword(ResetPasswordRequest $request) {
         if ($data = $this->service->resetPassword($request->validated())) {
             return $this->success($data);
         }
 
         return $this->failed($data);
+    }
+
+    public function resetPasswordIndex()
+    {
+        return view('authentication.resetpassword');
     }
 }

@@ -13,6 +13,7 @@ class LoginService extends BaseService
     public function login($credentials): array|bool
     {
         if (Auth::attemptByCredentials($credentials)) {
+            session()->put('user', Auth::user()->toArray());
             return [
                 'token' => Auth::userToken(),
             ];
