@@ -1,14 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Authentication;
+namespace App\Http\Controllers\API\Authentication;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Authentication\LoginRequest;
+use App\Http\Controllers\API\BaseController as Controller;
 use App\Http\Requests\Authentication\SignUpRequest;
-use App\Services\Authentication\LoginService;
 use App\Services\Authentication\SignUpService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class SignUpController extends Controller

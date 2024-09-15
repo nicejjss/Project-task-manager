@@ -15,7 +15,7 @@ class LoginRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'email' => 'required',
+            'email' => 'required|email:rfc',
             'password' => 'required',
         ];
     }
@@ -23,8 +23,9 @@ class LoginRequest extends BaseRequest
     public function messages(): array
     {
         return [
-            'username.required' => 'The mail field is required.',
+            'email.required' => 'The mail field is required.',
             'password.required' => 'The password field is required.',
+            'email.email' => 'Email phải đúng định dạng'
         ];
     }
 }

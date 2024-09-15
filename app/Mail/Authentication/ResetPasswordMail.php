@@ -14,7 +14,7 @@ class ResetPasswordMail extends Mailable
     use Queueable, SerializesModels;
 
     private string $activeToken;
-    private string $url = 'reset_password/';
+    private string $url = 'authentication/set_password?reset_token=';
 
     /**
      * Create a new message instance.
@@ -40,7 +40,7 @@ class ResetPasswordMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'authentication.reset_password',
+            view: 'mail.authentication.reset_password',
             with: [
                 'frontend_host' => config('app.frontend_host') . $this->url,
                 'activeToken' => $this->activeToken,

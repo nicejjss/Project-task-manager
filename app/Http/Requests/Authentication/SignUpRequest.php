@@ -19,18 +19,20 @@ class SignUpRequest extends BaseRequest
     {
         return [
             'email' => 'required|email:rfc',
-            'password' => 'required',
-            'confirm_pass' => 'required',
+            'password' => 'required|min:6',
+            'confirm_pass' => 'required|min:6',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'email.required' => 'The mail field is required.',
-            'email.email' => 'The mail field is wrong format.',
-            'password.required' => 'The password field is required.',
-            'confirm_pass.required' => 'The confirm password field is required.',
+            'email.required' => 'Email không được để trống',
+            'email.email' => 'Email sai format',
+            'password.required' => 'Mật khẩu không được để trống',
+            'confirm_pass.required' => 'Xác nhận mật khẩu không được để trống',
+            'password.min' => 'Mật khẩu dài ít nhất 6 ký tự',
+            'confirm_pass.min' => 'Xác nhận mật khẩu dài ít nhất 6 ký tự',
         ];
     }
 
@@ -43,11 +45,11 @@ class SignUpRequest extends BaseRequest
                 $data = $validator->getData();
 
                 if (Auth::existEmail(data_get($data, 'email', '_'))) {
-                    $this->addError($validator, 'Email', 'Email already exists');
+                    $this->addError($validator, 'Email', 'Email đã tồn tại');
                 }
 
                 if ((string)$data['password'] !== (string)$data['confirm_pass']) {
-                    $this->addError($validator, 'confirm_pass', 'Passwords do not match');
+                    $this->addError($validator, 'confirm_pass', 'Mật khẩu không khớp');
                 }
             });
     }

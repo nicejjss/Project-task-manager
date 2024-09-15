@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'authentication' => \App\Http\Middleware\Authentication::class,
+            'authenticationAlready' => \App\Http\Middleware\AuthenticationAlready::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

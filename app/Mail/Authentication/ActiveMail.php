@@ -14,7 +14,7 @@ class ActiveMail extends Mailable
     use Queueable, SerializesModels;
 
     private string $activeToken;
-    private string $url = 'active_account/';
+    private string $url = 'authentication/active_account?active_token=';
 
     /**
      * Create a new message instance.
@@ -40,7 +40,7 @@ class ActiveMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'authentication.active_mail',
+            view: 'mail.authentication.active_mail',
             with: [
                 'frontend_host' => config('app.frontend_host') . $this->url,
                 'activeToken' => $this->activeToken,

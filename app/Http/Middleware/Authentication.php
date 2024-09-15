@@ -12,12 +12,19 @@ class Authentication
 {
     use JsonResponseTrait;
 
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, string $type): Response
     {
-        $token = $request->header('token') ?? null;
-        if ($token && Auth::attempt($token) === true) {
-            return $next($request);
+        if ($type === 'api') {
+            $token = $request->header('token') ?? null;
+            if ($token && Auth::attemptApi($token) === true) {
+                return $next($request);
+            }
+            return $this->failed(data: 'UNAUTHORIZED', status: Response::HTTP_UNAUTHORIZED);
+        } else {
+            if(Auth::attempt()) {
+                return $next($request);
+            }
+            return redirect('authentication/login');
         }
-        return $this->failed(data: 'UNAUTHORIZED', status: Response::HTTP_UNAUTHORIZED);
     }
 }

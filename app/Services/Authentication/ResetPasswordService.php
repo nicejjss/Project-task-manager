@@ -2,21 +2,27 @@
 
 namespace App\Services\Authentication;
 use App\Mail\Authentication\ResetPasswordMail;
-use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class ResetPasswordService extends BaseService
 {
     public function sendMail($data): array|bool
     {
-        $email = data_get($data, 'email');
-        $activeToken = Hash::make($email);
-        Cache::put($activeToken, $email, ttl: 3600);
-        Mail::to(data_get($data, 'email', ''))->send(new ResetPasswordMail($activeToken));
+        try {
+            $email = data_get($data, 'email');
+            $activeToken = Hash::make($email);
+            Cache::put($activeToken, $email, ttl: 3600);
+            Mail::to(data_get($data, 'email', ''))->send(new ResetPasswordMail($activeToken));
 
-        return true;
+            return true;
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            return false;
+        }
+
     }
 
     public function resetPassword(mixed $validated): bool

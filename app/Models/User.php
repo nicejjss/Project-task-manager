@@ -17,6 +17,10 @@ class User extends Authenticate
         'name',
         'email',
         'password',
+        'avatar',
+        'google_id',
+        'access_token',
+        'refresh_token',
     ];
 
     /**
@@ -26,5 +30,8 @@ class User extends Authenticate
      */
     protected $hidden = [
         'password',
+        'google_id',
+        'created_at',
+        'updated_at',
     ];
 }

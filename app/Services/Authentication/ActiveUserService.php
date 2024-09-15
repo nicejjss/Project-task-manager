@@ -1,21 +1,32 @@
 <?php
 
 namespace App\Services\Authentication;
-use App\Models\User;
-use App\Repositories\UserRepository;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 
 class ActiveUserService extends BaseService
 {
-    public function active($credentials): array|bool
+    public function active($credentials)
     {
-        $user = $this->repository->create($credentials);
-        return [
-            'active' => true,
-            'token' => Auth::userToken($user),
-        ];
+        try {
+            return $this->repository->create($credentials);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function updatePassword($credentials) {
+        try {
+            $email = data_get($credentials, 'email');
+            $user = Auth::attemptByCredentials(['email' => $email]);
+            $user->update([
+                'password' => md5(data_get($credentials, 'new_password')),
+            ]);
+            return true;
+        } catch (\Exception $e) {
+            Log::error($e);
+            return false;
+        }
     }
 }

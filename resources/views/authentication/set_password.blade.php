@@ -17,9 +17,9 @@
             <img src="/logo.png" alt="Logo">
         </div>
 
-        <!-- Sign Up Form -->
-        <div id="signup-form" class="auth-form">
-            <h2 class="text-center">Đăng Ký</h2>
+        <!-- Forgot Password Form -->
+        <div id="forgot-password-form" class="auth-form">
+            <h2 class="text-center">Xác Nhận Mật Khẩu</h2>
             @if ($errors->any())
                 <div class="error" style="margin: 20px 0;">
                     <ul>
@@ -29,10 +29,10 @@
                     </ul>
                 </div>
             @endif
-            <form action="/authentication/signup" method="POST">
+            <form action="/authentication/reset_password" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <input type="email" class="form-control" id="signup-email" name="email" required placeholder="Nhập Email">
+                    <input type="email" class="form-control" id="signup-password" name="email" value="{{$email}}" hidden>
                 </div>
                 <div class="mb-3">
                     <input type="password" class="form-control" id="signup-password" name="password" required placeholder="Nhập Mật Khẩu">
@@ -41,20 +41,9 @@
                     <input type="password" class="form-control" id="confirm-password" name="confirm_pass" required placeholder="Nhập Lại Mật Khẩu">
                 </div>
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-success">Đăng Ký</button>
-                </div>
-                <div class="form-toggle">
-                    Already have an account? <a href="{{route('login')}}" id="login-link">Đăng Nhập</a>
+                    <button type="submit" class="btn btn-warning">Tiếp Tục</button>
                 </div>
             </form>
-            <div class="separator">HOẶC</div>
-            <div class="text-center mt-3">
-                <a href="{{route('google.login')}}">
-                    <button class="btn btn-outline-dark">
-                        <img src="https://img.icons8.com/color/16/000000/google-logo.png"/> Đăng Ký Bằng Google
-                    </button>
-                </a>
-            </div>
         </div>
         @if(session('success'))
             <div id="flash-message" class="alert alert-success">
@@ -67,6 +56,7 @@
         @endif
     </div>
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var flashMessage = document.getElementById('flash-message');

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 abstract class BaseRepository
 {
@@ -63,7 +64,6 @@ abstract class BaseRepository
      */
     public function create(array $attributes): mixed
     {
-
         return $this->model->create($attributes);
     }
 

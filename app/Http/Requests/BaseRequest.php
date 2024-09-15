@@ -43,7 +43,15 @@ class BaseRequest extends FormRequest
     public function failedValidation(Validator $validator)
     {
         $data = $validator->errors();
-        throw new HttpResponseException($this->failed($data, 'Authentication failed'));
+        if ($this->expectsJson()) {
+            $response = $this->failed($data, 'Authentication failed');
+        } else {
+            $response = redirect()->back()
+                ->withErrors($data)
+                ->withInput();
+        }
+
+        throw new HttpResponseException($response);
     }
 
     protected function addError(Validator $validator, string $field = null, string $message = null): \Illuminate\Support\MessageBag

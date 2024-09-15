@@ -19,6 +19,15 @@
         <!-- Login Form -->
         <div id="login-form" class="auth-form">
             <h2 class="text-center">Login</h2>
+            @if ($errors->any())
+                <div class="error" style="margin: 20px 0;">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <form action="/authentication/login" method="POST">
                 @csrf
                 <div class="mb-3">

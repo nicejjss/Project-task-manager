@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Authentication;
+namespace App\Http\Controllers\API\Authentication;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\BaseController as Controller;
 use App\Services\Authentication\SignUpService;
-use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthenticationController extends Controller
@@ -19,7 +18,6 @@ class GoogleAuthenticationController extends Controller
     public function callBack()
     {
         $user = Socialite::driver('google')->user();
-        $this->signUpService->signUp((array)$user);
         dd($user, $user->getId());
     }
 

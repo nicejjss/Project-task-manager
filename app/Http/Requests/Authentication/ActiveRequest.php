@@ -46,11 +46,7 @@ class ActiveRequest extends BaseRequest
                 $data = $validator->getData();
                 $active_token = data_get($data, 'active_token', '_');
                 if (!$this->user_info = Cache::get($active_token)) {
-                    $this->addError($validator, 'Active Token', 'Token expired');
-                }
-
-                if (Auth::existEmail(data_get($this->user_info, 'email', '_'))) {
-                    $this->addError($validator, 'Email', 'Email already signup, please use another');
+                    $this->addError($validator, 'Active Token', 'Token hết hạn');
                 }
 
                 $this->user_info['active_token'] = $active_token;

@@ -30,7 +30,7 @@ public function __construct(UserProvider $provider)
     /**
      * @throws Throwable
      */
-    public function attempt(string $token): bool
+    public function attemptApi(string $token): bool
     {
         if ($token) {
             try {
@@ -48,6 +48,16 @@ public function __construct(UserProvider $provider)
         return false;
     }
 
+    public function attempt()
+    {
+        if ($user = session()->get('user')) {
+            $this->user = $user;
+            return true;
+        }
+
+        return false;
+    }
+
     public function user(): Model
     {
         return $this->user;
@@ -58,11 +68,11 @@ public function __construct(UserProvider $provider)
         // TODO: Implement validate() method.
     }
 
-    public function attemptByCredentials(array $credentials): bool
+    public function attemptByCredentials(array $credentials): \Illuminate\Contracts\Auth\Authenticatable|bool
     {
         $credentials = $this->formatCredentials($credentials);
         if ($this->user = $this->provider->retrieveByCredentials($credentials)) {
-            return true;
+            return $this->user;
         }
 
         return false;
@@ -82,11 +92,11 @@ public function __construct(UserProvider $provider)
         return $credentials;
     }
 
-    public function userToken(Model $user = null): string
+    public function userToken(): string
     {
-        if ($user) {
-            $userMail = $user->email;
-            $userPass = $user->password;
+        if ($this->user()) {
+            $userMail = $this->user()->email;
+            $userPass = $this->user()->password;
         } else {
             $userMail = auth()->user()->email;
             $userPass = auth()->user()->password;

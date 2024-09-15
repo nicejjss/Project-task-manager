@@ -2,25 +2,26 @@
 
 namespace App\Services\Authentication;
 use App\Mail\Authentication\ActiveMail;
-use App\Models\User;
-use App\Repositories\UserRepository;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class SignUpService extends BaseService
 {
     public function signUp(array $credentials): bool
     {
-        $data = $this->format($credentials);
-        $activeToken = Hash::make(implode('-', $data));
-        Cache::put($activeToken, $data, ttl: 3600);
-        Mail::to(data_get($data, 'email', ''))->send(new ActiveMail($activeToken));
+        try {
+            $data = $this->format($credentials);
+            $activeToken = Hash::make(implode('-', $data));
+            Cache::put($activeToken, $data, ttl: 3600);
+            Mail::to(data_get($data, 'email', ''))->send(new ActiveMail($activeToken));
 
-        return true;
+            return true;
+        } catch (\Exception $exception) {
+            Log::error($exception);
+            return false;
+        }
     }
 
     public function format(array $credentials): array
@@ -28,7 +29,11 @@ class SignUpService extends BaseService
         return [
             'name' =>explode('@', $credentials['email'])[0],
             'email' => $credentials['email'],
-            'password' => md5($credentials['password']),
+            'password' => md5(data_get($credentials, 'password')),
+            'avatar' => data_get($credentials, 'avatar'),
+            'google_id' => data_get($credentials, 'id'),
+            'access_token' => data_get($credentials, 'token'),
+            'refresh_token' => data_get($credentials, 'refreshToken'),
         ];
     }
 }

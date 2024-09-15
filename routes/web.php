@@ -1,29 +1,37 @@
 <?php
 
-use App\Http\Controllers\Authentication\ActiveController;
-use App\Http\Controllers\Authentication\LoginController;
-use App\Http\Controllers\Authentication\ResetPasswordController;
-use App\Http\Controllers\Authentication\SignUpController;
+use App\Http\Controllers\WEB\Authentication\ActiveController;
+use App\Http\Controllers\WEB\Authentication\GoogleAuthenticationController;
+use App\Http\Controllers\WEB\Authentication\LoginController;
+use App\Http\Controllers\WEB\Authentication\ResetPasswordController;
+use App\Http\Controllers\WEB\Authentication\SignUpController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Authentication\GoogleAuthenticationController;
+use Illuminate\Support\Facades\Storage;
 
-Route::get('/', function () {
-    return redirect('/authentication/login');
-});
+//Route::get('/', function () {
+//    return redirect('/authentication/login');
+//});
 
-Route::prefix('authentication')->group(function () {
+Route::prefix('authentication')->middleware('authenticationAlready')->group(function () {
     Route::get('/login', [LoginController::class, 'loginIndex'])->name('login');
     Route::get('/signup', [SignUpController::class, 'signUpIndex'])->name('signup');
     Route::get('/reset_password', [ResetPasswordController::class, 'resetPasswordIndex'])->name('reset_password');
+    Route::get('/set_password', [ResetPasswordController::class, 'setPasswordIndex'])->name('set_password');
     Route::get('/google/callback', [GoogleAuthenticationController::class, 'callBack']);
     Route::get('/google/login', [GoogleAuthenticationController::class, 'redirect'])->name('google.login');
 
     Route::post('/login', [LoginController::class, 'login']);
     Route::post('/signup', [SignUpController::class, 'signUp']);
-    Route::post('/active_account', [ActiveController::class, 'active']);
+    Route::get('/active_account', [ActiveController::class, 'active']);
     Route::post('/send_mail_reset', [ResetPasswordController::class, 'sendMail']);
-    Route::post('reset_password', [ResetPasswordController::class, 'resetPassword']);
+    Route::post('/reset_password', [ResetPasswordController::class, 'resetPassword']);
+});
+
+Route::middleware(['authentication:web'])->group(function () {
+   Route::get('/', function () {
+       dd(session('user'));
+   });
 });
 
 Route::get('/user', function () {
@@ -75,4 +83,13 @@ Route::get('/event-view', function () {
 Route::get('/event-view-push', function () {
     $a = event(new \App\Events\NewEvent('Hello World'));
     dd($a);
+});
+
+Route::get('/file', function () {
+    dd(Storage::disk('google')->put('project/test.txt', 'Hello World'));
+});
+
+
+Route::get('/storage', function () {
+    dd(Storage::disk('gcs')->get('file1.txt'));
 });

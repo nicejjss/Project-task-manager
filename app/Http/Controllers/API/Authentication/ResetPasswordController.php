@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Authentication;
+namespace App\Http\Controllers\API\Authentication;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\API\BaseController as Controller;
 use App\Http\Requests\Authentication\ResetPasswordRequest;
 use App\Services\Authentication\ResetPasswordService;
 
