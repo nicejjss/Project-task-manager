@@ -35,4 +35,10 @@ class LoginController extends Controller
     {
         return view('authentication.login');
     }
+
+    public function logout()
+    {
+        Auth::logout();
+        return redirect('/authentication/login');
+    }
 }

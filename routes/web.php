@@ -13,19 +13,22 @@ use Illuminate\Support\Facades\Storage;
 //    return redirect('/authentication/login');
 //});
 
-Route::prefix('authentication')->middleware('authenticationAlready')->group(function () {
-    Route::get('/login', [LoginController::class, 'loginIndex'])->name('login');
-    Route::get('/signup', [SignUpController::class, 'signUpIndex'])->name('signup');
-    Route::get('/reset_password', [ResetPasswordController::class, 'resetPasswordIndex'])->name('reset_password');
-    Route::get('/set_password', [ResetPasswordController::class, 'setPasswordIndex'])->name('set_password');
-    Route::get('/google/callback', [GoogleAuthenticationController::class, 'callBack']);
-    Route::get('/google/login', [GoogleAuthenticationController::class, 'redirect'])->name('google.login');
+Route::prefix('authentication')->group(function () {
+    Route::get('/logout', [LoginController::class, 'logout']);
+    Route::middleware('authenticationAlready')->group(function () {
+        Route::get('/login', [LoginController::class, 'loginIndex'])->name('login');
+        Route::get('/signup', [SignUpController::class, 'signUpIndex'])->name('signup');
+        Route::get('/reset_password', [ResetPasswordController::class, 'resetPasswordIndex'])->name('reset_password');
+        Route::get('/set_password', [ResetPasswordController::class, 'setPasswordIndex'])->name('set_password');
+        Route::get('/google/callback', [GoogleAuthenticationController::class, 'callBack']);
+        Route::get('/google/login', [GoogleAuthenticationController::class, 'redirect'])->name('google.login');
 
-    Route::post('/login', [LoginController::class, 'login']);
-    Route::post('/signup', [SignUpController::class, 'signUp']);
-    Route::get('/active_account', [ActiveController::class, 'active']);
-    Route::post('/send_mail_reset', [ResetPasswordController::class, 'sendMail']);
-    Route::post('/reset_password', [ResetPasswordController::class, 'resetPassword']);
+        Route::post('/login', [LoginController::class, 'login']);
+        Route::post('/signup', [SignUpController::class, 'signUp']);
+        Route::get('/active_account', [ActiveController::class, 'active']);
+        Route::post('/send_mail_reset', [ResetPasswordController::class, 'sendMail']);
+        Route::post('/reset_password', [ResetPasswordController::class, 'resetPassword']);
+    });
 });
 
 Route::middleware(['authentication:web'])->group(function () {

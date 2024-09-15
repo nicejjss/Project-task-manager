@@ -104,4 +104,9 @@ public function __construct(UserProvider $provider)
 
         return Crypt::encrypt("{\"email\":\"$userMail\",\"password\":\"$userPass\"}");
     }
+
+    public function logout()
+    {
+        session()->flush();
+    }
 }
