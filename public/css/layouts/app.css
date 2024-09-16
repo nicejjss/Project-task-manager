@@ -11,7 +11,8 @@ body {
 /* Colors */
 :root {
     --primary-color: #4caf93;
-    --secondary-color: #f0f0f0;
+    --secondary-color: #edf4f0;
+    --content-color-background: #f0f0f0;
 }
 
 /* Header - Horizontal Navigation */
@@ -19,8 +20,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--primary-color);
-    padding: 1rem;
+    background-color: var(--secondary-color);
+    padding: 10px;
     color: white;
     position: fixed;
     top: 0;
@@ -94,11 +95,11 @@ body {
     background-color: var(--primary-color);
     width: 200px;
     height: 100vh;
-    padding-top: 1rem;
     position: fixed;
     top: 60px; /* Below the header */
     left: 0;
     z-index: 9;
+    padding-top: 63px;
 }
 
 .sidebar ul {
@@ -106,7 +107,7 @@ body {
 }
 
 .sidebar ul li {
-    margin-bottom: 1rem;
+    padding: 20px 0;
 }
 
 .sidebar ul li a {
@@ -117,15 +118,82 @@ body {
     display: block;
 }
 
+.sidebar ul li:hover {
+    background-color: var(--content-color-background);
+}
+
+.sidebar ul li:hover a{
+    color: var(--primary-color)!important;
+}
+
 /* Content */
 .content {
-    margin-left: 220px;
-    padding: 80px 20px; /* Top padding adjusted for header */
+    margin-left: 200px;
+    padding: 0 20px;
     position: relative;
+    height: 100vh;
+    background-color: var(--content-color-background);
 }
 
 .menu-toggle {
     display: none;
+}
+
+#project-name {
+    margin-left: 220px;
+    padding: 85px 0 20px;
+    position: relative;
+    font-weight: bold;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    right: 0;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    cursor: pointer;
+}
+
+.dropdown-content a:hover {
+    background-color: lightgrey;
+}
+
+.notification {
+    position: relative;
+    cursor: pointer;
+}
+
+.notification:hover::before,
+.notification:focus::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background-color: lightgrey;
+    opacity: 0.5;
+    z-index: -1;
 }
 
 /* Media Query for Mobile */

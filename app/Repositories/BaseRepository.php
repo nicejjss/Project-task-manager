@@ -102,4 +102,8 @@ abstract class BaseRepository
         return false;
     }
 
+    public function updateOrCreate(array $find, array $update)
+    {
+        return $this->model->updateOrCreate($find, $update);
+    }
 }

@@ -9,7 +9,8 @@ class ActiveUserService extends BaseService
     public function active($credentials)
     {
         try {
-            return $this->repository->create($credentials);
+            $email = data_get($credentials, 'email');
+            return $this->repository->updateOrCreate(['email' => $email], $credentials);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return false;

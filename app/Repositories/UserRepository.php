@@ -12,7 +12,7 @@ class UserRepository extends BaseRepository
         return User::class;
     }
 
-    public function getUser(array $data): User
+    public function getUser(array $data): mixed
     {
         return $this->model->where($data)->first();
     }

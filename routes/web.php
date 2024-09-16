@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Storage;
 //});
 
 Route::prefix('authentication')->group(function () {
-    Route::get('/logout', [LoginController::class, 'logout']);
+    Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
     Route::middleware('authenticationAlready')->group(function () {
         Route::get('/login', [LoginController::class, 'loginIndex'])->name('login');
         Route::get('/signup', [SignUpController::class, 'signUpIndex'])->name('signup');
@@ -33,7 +33,7 @@ Route::prefix('authentication')->group(function () {
 
 Route::middleware(['authentication:web'])->group(function () {
    Route::get('/', function () {
-       dd(session('user'));
+       return view('home')->with(['user' => session()->get('user')]);
    });
 });
 

@@ -44,7 +44,7 @@
                     <button type="submit" class="btn btn-success">Đăng Ký</button>
                 </div>
                 <div class="form-toggle">
-                    Already have an account? <a href="{{route('login')}}" id="login-link">Đăng Nhập</a>
+                    Đã có tài khoản? <a href="{{route('login')}}" id="login-link">Đăng Nhập</a>
                 </div>
             </form>
             <div class="separator">HOẶC</div>

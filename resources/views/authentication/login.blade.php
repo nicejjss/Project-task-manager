@@ -18,7 +18,7 @@
 
         <!-- Login Form -->
         <div id="login-form" class="auth-form">
-            <h2 class="text-center">Login</h2>
+            <h2 class="text-center">Đăng Nhập</h2>
             @if ($errors->any())
                 <div class="error" style="margin: 20px 0;">
                     <ul>
@@ -43,7 +43,7 @@
                     <button type="submit" class="btn btn-primary">Đăng Nhập</button>
                 </div>
                 <div class="form-toggle">
-                    Don't have an account? <a href="{{route('signup')}}" id="signup-link">Đăng ký</a>
+                    Không có tài khoản? <a href="{{route('signup')}}" id="signup-link">Đăng ký</a>
                 </div>
             </form>
             <div class="separator">HOẶC</div>
