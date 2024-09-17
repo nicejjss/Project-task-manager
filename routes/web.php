@@ -35,6 +35,10 @@ Route::middleware(['authentication:web'])->group(function () {
    Route::get('/', function () {
        return view('home')->with(['user' => session()->get('user')]);
    });
+
+    Route::get('/project', function () {
+        return view('project')->with(['user' => session()->get('user')]);
+    });
 });
 
 Route::get('/user', function () {

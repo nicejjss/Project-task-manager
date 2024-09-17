@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WEB\Authentication;
 use App\Http\Controllers\WEB\BaseController as Controller;
 use App\Services\Authentication\ActiveUserService;
 use App\Services\Authentication\SignUpService;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleAuthenticationController extends Controller
@@ -30,8 +31,11 @@ class GoogleAuthenticationController extends Controller
         return redirect('/authentication/login')->withErrors(['authentication' => 'Email đã tồn tại']);
     }
 
-    public function redirect()
+    public function redirect(string $path = null)
     {
+        if ($path) {
+            session(['path' => $path]);
+        }
         return Socialite::driver('google')->with(['access_type' => 'offline'])
             ->scopes(['https://www.googleapis.com/auth/calendar.events'])
             ->redirect();

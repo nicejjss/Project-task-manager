@@ -13,7 +13,7 @@ notificationIcon.addEventListener('click', () => {
 // Close notification bar when clicking outside
 document.addEventListener('click', (e) => {
     if (!notificationBar.contains(e.target) && !notificationIcon.contains(e.target)) {
-        notificationBar.style.right = '-300px';
+        notificationBar.style.right = '-450px';
     }
 });
 
@@ -27,3 +27,7 @@ document.querySelector('.logo-section').appendChild(menuToggle);
 menuToggle.addEventListener('click', () => {
     sidebar.classList.toggle('open');
 });
+
+function closeNotificationBar() {
+    document.getElementById("notification-bar").style.right = "-450px";
+}

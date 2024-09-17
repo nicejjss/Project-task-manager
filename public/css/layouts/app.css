@@ -27,6 +27,9 @@ body {
     top: 0;
     width: 100%;
     z-index: 10;
+    -webkit-box-shadow: 0px 1px 0px 0px rgba(184,184,184,1);
+    -moz-box-shadow: 0px 1px 0px 0px rgba(184,184,184,1);
+    box-shadow: 0px 1px 0px 0px rgba(184,184,184,1);
 }
 
 .logo-section {
@@ -71,8 +74,8 @@ body {
 .notification-bar {
     position: fixed;
     top: 0;
-    right: -300px;
-    width: 300px;
+    right: -450px;
+    width: 450px;
     height: 100vh;
     background-color: var(--primary-color);
     color: white;
@@ -196,6 +199,17 @@ body {
     z-index: -1;
 }
 
+#close-contain {
+    text-align: right;
+    margin-bottom: 20px;
+}
+
+.close-icon {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 25px;
+}
+
 /* Media Query for Mobile */
 @media (max-width: 768px) {
     .sidebar {
@@ -240,7 +254,7 @@ body {
         font-size: 1.2rem;
     }
 
-    .projects-link {
-        margin-left: 10px;
+    #project-name {
+        margin-left: 20px;
     }
 }

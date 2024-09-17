@@ -13,9 +13,9 @@
 <header class="header">
     <div class="logo-section">
         <div class="logo">
-            <img style="width: 100px" src="{{asset('logo.png')}}">
+            <a style="color: #111" href="/" class="projects-link"><img style="width: 100px" src="{{asset('logo.png')}}"></a>
         </div>
-        <a style="color: #111" href="#" class="projects-link">Projects</a>
+        <a style="color: #111" href="/" class="projects-link">Trang chủ</a>
     </div>
     <div class="nav-right">
         <div class="dropdown">
@@ -36,32 +36,14 @@
 
 <!-- Notification Vertical Bar -->
 <div class="notification-bar" id="notification-bar">
+    <div id="close-contain">
+        <div class="close-icon" onclick="closeNotificationBar()">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+    </div>
     <ul>
         <li>No new notifications</li>
         <li>Task Reminder</li>
         <li>New Message</li>
     </ul>
 </div>
-
-<!-- Vertical Navigation -->
-<nav class="sidebar" id="sidebar">
-    <ul>
-        <li><a href="#">Tổng Quan Dự Án</a></li>
-        <li><a href="#">Tạo Task</a></li>
-        <li><a href="#">Danh Sách Công Việc</a></li>
-        <li><a href="#">Thống Kê</a></li>
-    </ul>
-</nav>
-
-<div id="project-name">
-    Dự Án: Project
-</div>
-
-<!-- Main Content -->
-<main class="content">
-    @yield('content')
-</main>
-
-<script src="/js/layouts/app.js" defer></script>
-</body>
-</html>
