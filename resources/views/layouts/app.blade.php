@@ -13,13 +13,13 @@
 <header class="header">
     <div class="logo-section">
         <div class="logo">
-            <a style="color: #111" href="/" class="projects-link"><img style="width: 100px" src="{{asset('logo.png')}}"></a>
+            <a style="color: #111" href="/"><img style="width: 100px" src="{{asset('logo.png')}}"></a>
         </div>
-        <a style="color: #111" href="/" class="projects-link">Trang chủ</a>
+        <a href="/" class="projects-link">Trang chủ</a>
     </div>
     <div class="nav-right">
         <div class="dropdown">
-            <img src="{{ asset('avatar.png') }}" alt="Avatar" class="avatar">
+            <img src="{{ $user['avatar'] ?? asset('avatar.png') }}" alt="Avatar" class="avatar">
             <div class="dropdown-content">
                 <div style="color: #b5b5b5;
     font-size: 14px;

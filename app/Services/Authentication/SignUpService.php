@@ -26,10 +26,11 @@ class SignUpService extends BaseService
 
     public function format(array $credentials): array
     {
+        $password = data_get($credentials, 'password');
         return [
             'name' =>explode('@', $credentials['email'])[0],
             'email' => $credentials['email'],
-            'password' => md5(data_get($credentials, 'password')),
+            'password' => $password ? md5($password) : null,
             'avatar' => data_get($credentials, 'avatar'),
             'google_id' => data_get($credentials, 'id'),
             'access_token' => data_get($credentials, 'token'),

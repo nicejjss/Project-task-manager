@@ -1,5 +1,10 @@
 <!-- Vertical Navigation -->
 <nav class="sidebar" id="sidebar">
+    <!-- Hamburger Icon -->
+    <div id="hamburger-icon">
+        <i class="fa-solid fa-bars" id="hamburger"></i>
+        <i style="display: none" class="fa-solid fa-xmark" id="close"></i>
+    </div>
     <ul>
         <li><a href="#">Tổng Quan Dự Án</a></li>
         <li><a href="#">Tạo Task</a></li>
@@ -12,4 +17,3 @@
 <div id="project-name">
     Dự Án: Project
 </div>
-
