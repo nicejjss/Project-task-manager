@@ -10,7 +10,18 @@ class ActiveUserService extends BaseService
     {
         try {
             $email = data_get($credentials, 'email');
-            return $this->repository->updateOrCreate(['email' => $email], $credentials);
+
+            $user  = $this->repository->getUser(['email' => $email]);
+
+            if ($user) {
+                $user->google_id = data_get($credentials, 'google_id');
+                $user->access_token = data_get($credentials, 'access_token');
+                $user->refresh_token = data_get($credentials, 'refresh_token');
+                $user->save();
+                return $user;
+            }
+
+            return $this->repository->create($credentials);
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return false;

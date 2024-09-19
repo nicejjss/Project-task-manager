@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\Authentication;
+use App\Jobs\ResetPasswordJob;
 use App\Mail\Authentication\ResetPasswordMail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +16,7 @@ class ResetPasswordService extends BaseService
             $email = data_get($data, 'email');
             $activeToken = Hash::make($email);
             Cache::put($activeToken, $email, ttl: 3600);
-            Mail::to(data_get($data, 'email', ''))->send(new ResetPasswordMail($activeToken));
+            ResetPasswordJob::dispatch(data_get($data, 'email', ''), $activeToken);
 
             return true;
         } catch (\Exception $exception) {

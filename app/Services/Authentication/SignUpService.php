@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\Authentication;
+use App\Jobs\ActiveMailJob;
 use App\Mail\Authentication\ActiveMail;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +16,7 @@ class SignUpService extends BaseService
             $data = $this->format($credentials);
             $activeToken = Hash::make(implode('-', $data));
             Cache::put($activeToken, $data, ttl: 3600);
-            Mail::to(data_get($data, 'email', ''))->send(new ActiveMail($activeToken));
+            ActiveMailJob::dispatch(data_get($data, 'email', ''), $activeToken);
 
             return true;
         } catch (\Exception $exception) {
