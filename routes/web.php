@@ -5,6 +5,9 @@ use App\Http\Controllers\WEB\Authentication\GoogleAuthenticationController;
 use App\Http\Controllers\WEB\Authentication\LoginController;
 use App\Http\Controllers\WEB\Authentication\ResetPasswordController;
 use App\Http\Controllers\WEB\Authentication\SignUpController;
+use App\Http\Controllers\WEB\HomeController;
+use App\Http\Controllers\WEB\ProjectController;
+use App\Http\Controllers\WEB\TaskController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -32,13 +35,30 @@ Route::prefix('authentication')->group(function () {
 });
 
 Route::middleware(['authentication:web'])->group(function () {
-   Route::get('/', function () {
-       return view('home')->with(['user' => session()->get('user')]);
-   });
+   Route::get('/', [HomeController::class, 'index']);
 
-    Route::get('/project', function () {
-        return view('project')->with(['user' => session()->get('user')]);
-    });
+   Route::prefix('project') ->group(function () {
+       Route::get('/create', [ProjectController::class, 'createIndex'])->name('project.create');
+       Route::post('/store', [ProjectController::class, 'store']);
+       Route::get('/invite/{projectID}', [ProjectController::class, 'invite']);
+
+       Route::get('/{projectID}', [ProjectController::class, 'index']);
+       Route::post('/{projectID}/add', [ProjectController::class, 'addMember']);
+       Route::get('/{projectID}/task/create', [TaskController::class, 'taskCreateView'])
+;//       Route::get('/edit/{id}', function ($id) {
+//           return view('project_edit')->with('id', $id);
+//       });
+//       Route::get('/view/{id}', function ($id) {
+//           return view('project_view')->with('id', $id);
+//       });
+//       Route::get('/delete/{id}', function ($id) {
+//           Storage::delete('project/'. $id. '.json');
+//           return redirect()->route('project.list');
+//       });
+   });
+//    Route::get('/project', function () {
+//        ->with(['user' => session()->get('user'), 'key' => config('broadcasting.connections.pusher.key')]);
+//    });
 });
 
 Route::get('/user', function () {
@@ -88,15 +108,14 @@ Route::get('/event-view', function () {
 });
 
 Route::get('/event-view-push', function () {
-    $a = event(new \App\Events\NewEvent('Hello World'));
-    dd($a);
+    dd(event(new \App\Events\NewEvent('Hello World')));
 });
 
 Route::get('/file', function () {
-    dd(Storage::disk('google')->put('project/test.txt', 'Hello World'));
+    dd(Storage::disk('google')->put('test.txt', 'Hello World'));
 });
 
 
 Route::get('/storage', function () {
-    dd(Storage::disk('gcs')->get('file1.txt'));
+    dd(Storage::disk('gcs')->url('project/project_17.md'));
 });

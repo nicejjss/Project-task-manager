@@ -1,0 +1,83 @@
+:root {
+    --primary-color: #4caf93;
+    --secondary-color: #edf4f0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.content {
+    margin: 0;
+}
+
+.container {
+    max-width: 1200px;
+    padding: 20px;
+    background-color: white;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transform: translate(-50%, -50%);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="email"] {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+input[type="email"] {
+    width: 100%;
+}
+
+#editor {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+button {
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #388e7b;
+}
+
+#invitedList {
+    margin-top: 10px;
+}
+
+#invitedList li {
+    list-style: none;
+    background-color: var(--secondary-color);
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}

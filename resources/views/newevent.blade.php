@@ -3,7 +3,6 @@
     <title>Pusher Test</title>
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
-
         // Enable pusher logging - don't include this in production
         Pusher.logToConsole = true;
 
@@ -11,7 +10,7 @@
             cluster: 'ap1'
         });
 
-        var channel = pusher.subscribe('channels');
+        var channel = pusher.subscribe('channels.user_5');
         channel.bind('my-event', function(data) {
             console.log(data);
             alert(JSON.stringify(data));

@@ -54,7 +54,7 @@ body {
     align-items: center;
 }
 
-.avatar {
+.avatar-app {
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -68,6 +68,7 @@ body {
 .notification-icon {
     cursor: pointer;
     font-size: 1.5rem;
+    color: #707070;
 }
 
 /* Notification Vertical Bar */
@@ -140,7 +141,7 @@ body {
 
 #project-name {
     margin-left: 200px;
-    padding: 85px 20px 20px;
+    padding: 59px 20px 20px;
     position: relative;
     font-weight: bold;
 }

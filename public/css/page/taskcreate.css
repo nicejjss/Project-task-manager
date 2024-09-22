@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    margin: 50px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#create-text {
+    color: #4caf93;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.column {
+    flex: 1;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+textarea {
+    height: 100px;
+}
+
+#submit-btn {
+    background-color: #4caf93;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+
+#submit-btn:hover {
+    background-color: #45a881;
+}
+
+#output {
+    margin-top: 20px;
+    color: green;
+    font-weight: bold;
+}
+
+.content {
+    height: unset;
+}
+
+#project-name{
+    background-color: white;
+}
+
+#task_create {
+    background-color: var(--content-color-background);
+}
+
+#task_create a {
+    color: var(--primary-color);
+}
+
+.column-left {
+    width: 70%;
+}
+
+.column-right {
+    width: 30%;
+}
+
+.ql-snow * {
+    font-size: 20px;
+}
+
+#editor {
+    min-height: 200px;
+}
+
+#fileList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#fileList li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+#fileList li span {
+    color: red;
+    font-size: 18px;
+}

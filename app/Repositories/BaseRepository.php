@@ -106,4 +106,13 @@ abstract class BaseRepository
     {
         return $this->model->updateOrCreate($find, $update);
     }
+
+    public function join(string $table, string $exp1, string $expression, string $exp2)
+    {
+        return $this->model->join($table, $exp1, $expression, $exp2);
+    }
+
+    public function where(array $expression) {
+        return $this->model->where([$expression]);
+    }
 }

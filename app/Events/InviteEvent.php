@@ -9,19 +9,22 @@ use Illuminate\Support\Facades\Log;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-class NewEvent implements ShouldBroadcastNow
+class InviteEvent implements ShouldBroadcastNow
 {
     use SerializesModels;
 
-    public string $msg;
+    public string $projectName;
+    private string $target;
 
     /**
      * Create a new event instance.
      */
     public function __construct(
-        string $msg
+        string $projectName,
+        string $target
     ) {
-        $this->msg = $msg;
+        $this->projectName = $projectName;
+        $this->target = $target;
     }
 
     /**
@@ -33,7 +36,7 @@ class NewEvent implements ShouldBroadcastNow
     {
         try {
             return [
-                new Channel('channels.user_' . 5),
+                new Channel('channels.user_' . $this->target),
             ];
         } catch (\Exception $e) {
             Log::error($e->getMessage());
@@ -46,7 +49,7 @@ class NewEvent implements ShouldBroadcastNow
      */
     public function broadcastAs(): string
     {
-        return 'my-event';
+        return 'invitation';
     }
 
     /**
@@ -57,8 +60,7 @@ class NewEvent implements ShouldBroadcastNow
     public function broadcastWith(): array
     {
         return [
-            'id' => 'No no no no no no no no no no no no no no no no no no',
-            'msg' => $this->msg,
+            'msg' => 'Bạn có lời mời tham da dự án ' . $this->projectName,
         ];
     }
 }

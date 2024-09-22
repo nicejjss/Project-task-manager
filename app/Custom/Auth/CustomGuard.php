@@ -51,14 +51,17 @@ public function __construct(UserProvider $provider)
     public function attempt()
     {
         if ($user = session()->get('user')) {
-            $this->user = $user;
+            $this->user = $this->attemptByCredentials([
+                "id" => $user['id'],
+                "email" => $user['email'],
+            ]);
             return true;
         }
 
         return false;
     }
 
-    public function user(): Model
+    public function user(): mixed
     {
         return $this->user;
     }

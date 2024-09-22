@@ -7,6 +7,7 @@ use App\Custom\Auth\CustomProvider;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +31,13 @@ class AppServiceProvider extends ServiceProvider
         Auth::provider('custom', function (Application $app, array $config) {
             // Return an instance of Illuminate\Contracts\Auth\UserProvider...
             return new CustomProvider($config['model']);
+        });
+
+        View::composer('layouts.app', function ($view) {
+            $view->with([
+                'user' => auth()->user(),
+                'key' => config('broadcasting.connections.pusher.key'),
+            ]);
         });
     }
 }

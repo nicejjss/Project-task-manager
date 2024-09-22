@@ -16,4 +16,8 @@ class UserRepository extends BaseRepository
     {
         return $this->model->where($data)->first();
     }
+
+    public function getAuthUser() {
+        return auth()->user();
+    }
 }

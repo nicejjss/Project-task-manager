@@ -14,17 +14,9 @@ class Authentication
 
     public function handle(Request $request, Closure $next, string $type): Response
     {
-        if ($type === 'api') {
-            $token = $request->header('token') ?? null;
-            if ($token && Auth::attemptApi($token) === true) {
-                return $next($request);
-            }
-            return $this->failed(data: 'UNAUTHORIZED', status: Response::HTTP_UNAUTHORIZED);
-        } else {
-            if(Auth::attempt()) {
-                return $next($request);
-            }
-            return redirect('authentication/login');
+        if(Auth::attempt()) {
+            return $next($request);
         }
+        return redirect('authentication/login');
     }
 }

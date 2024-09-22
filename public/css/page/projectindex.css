@@ -1,0 +1,194 @@
+#project_index {
+    background-color: var(--content-color-background);
+}
+
+#project_index a{
+    color: var(--primary-color) !important;
+}
+
+body {
+    height: 100vh;
+    background-color: var(--content-color-background);
+}
+
+#project-name {
+    background-color: white;
+}
+
+#markdown-content{
+    background-color: white;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    width: 60%;
+    min-height: 60vh;
+    padding: 10px;
+}
+
+#description {
+    margin: 20px 0;
+}
+
+#content-detail {
+    display: flex;
+}
+
+#right-side {
+    width: 40%;
+    padding-left: 20px;
+}
+
+.content {
+    height: unset;
+}
+
+#status-text {
+    font-size: 25px;
+    font-weight: 700;
+}
+
+#myChart {
+    height: 95px;
+}
+
+#invite-text {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 20px 0;
+}
+
+form {
+    display: flex;
+    justify-content: space-between;
+}
+
+input[name="email"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 60%;
+}
+
+input[type="submit"] {
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 30%;
+}
+
+#toggleButton {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 30%;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+#emailList ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#emailList li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.alert {
+    display: none;
+}
+
+.alert-success {
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.alert-danger {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+@keyframes showFlashMessage {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes hideFlashMessage {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.show-flash-message {
+    animation: showFlashMessage 1.5s ease-in-out;
+}
+
+.hide-flash-message {
+    animation: hideFlashMessage 1.5s ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+/* Notification styling */
+.notification-mail {
+    position: fixed; /* Always stays in the same place even when scrolling */
+    top: 20px;
+    right: 20px;
+    background-color: #4CAF50; /* Success color */
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    display: none; /* Hidden by default */
+    z-index: 1000; /* Ensures it stays above other elements */
+    font-size: 14px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional: subtle shadow */
+}
+
+.notification-mail.error {
+    background-color: #f44336; /* Error color */
+}
+
+.button-container {
+    justify-content: flex-end;
+    margin-top: 20px;
+    text-align: center;
+}
+
+#editButton, #closeButton {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#editButton {
+    background-color: #4c94af;
+    color: white;
+}
+
+#closeButton {
+    background-color: #bd4c44;
+    color: white;
+    margin-left: 10px;
+}
