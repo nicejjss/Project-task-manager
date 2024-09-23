@@ -15,16 +15,19 @@ class InviteEvent implements ShouldBroadcastNow
 
     public string $projectName;
     private string $target;
+    private int $projectId;
 
     /**
      * Create a new event instance.
      */
     public function __construct(
         string $projectName,
-        string $target
+        string $target,
+        int $projectID,
     ) {
         $this->projectName = $projectName;
         $this->target = $target;
+        $this->projectId = $projectID;
     }
 
     /**
@@ -61,6 +64,7 @@ class InviteEvent implements ShouldBroadcastNow
     {
         return [
             'msg' => 'Bạn có lời mời tham da dự án ' . $this->projectName,
+            'projectId' => $this->projectId
         ];
     }
 }

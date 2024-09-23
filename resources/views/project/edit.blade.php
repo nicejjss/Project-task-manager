@@ -30,11 +30,11 @@
     }
 
     .note-editor.note-frame .note-editing-area .note-editable, .note-editor.note-airframe .note-editing-area .note-editable {
-         max-height: 450px !important; /* Ensure max height is applied */
-         overflow-y: auto;  /* Enable vertical scrolling */
-         padding-left: 20px; /* Add padding to the left */
-         padding-right: 20px; /* Add padding to the right */
-     }
+        max-height: 450px !important; /* Ensure max height is applied */
+        overflow-y: auto;  /* Enable vertical scrolling */
+        padding-left: 20px; /* Add padding to the left */
+        padding-right: 20px; /* Add padding to the right */
+    }
     .note-resize {
         display: none !important; /* Hide the resize bar */
     }
@@ -42,7 +42,7 @@
 <main class="content">
     <div class="container">
         <!-- Title -->
-        <h2 style="text-align: center;">Thêm Dự Án</h2>
+        <h2 style="text-align: center;">Sửa Dự Án</h2>
 
         <!-- Form and Email Invitation Section Side by Side -->
         <div style="display: flex; justify-content: space-between;">
@@ -52,14 +52,16 @@
                     @csrf
                     <!-- Project Name Input -->
                     <label for="projectName">Tên Dự Án <span style="color: red">*</span></label>
-                    <input type="text" id="projectName" name="projectName" required>
+                    <input type="text" id="projectName" name="projectName" required value="{{$name}}">
 
                     <!-- QuillJS WYSIWYG Editor -->
                     <label for="projectDescription">Mô Tả</label>
-                    <textarea  id="editor" style="height: 450px;"></textarea >
+                    <textarea  id="editor" style="height: 450px;">
+                        {!! $description !!}
+                    </textarea >
 
                     <!-- Create Project Button -->
-                    <button type="submit" id="createBtn">Tạo Dự Án</button>
+                    <button type="submit" id="createBtn">Sửa Dự Án</button>
                 </form>
             </div>
 

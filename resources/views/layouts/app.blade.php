@@ -13,7 +13,7 @@
 <header class="header">
     <div class="logo-section">
         <div class="logo">
-            <a style="color: #111" href="/"><img style="width: 100px" src="{{asset('logo.png')}}"></a>
+            <a style="color: #111" href="/"><img style="width: 130px;" src="{{asset('logo.png')}}"></a>
         </div>
         <a href="/" class="projects-link">Trang chủ</a>
     </div>

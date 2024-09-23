@@ -47,7 +47,7 @@ class ProjectInviteJob implements ShouldQueue
             ]);
 
             // Send email and create notification for invited person
-            event(new \App\Events\InviteEvent($this->projectName, $invitedPerson));
+            event(new \App\Events\InviteEvent($this->projectName, $invitedPerson, $this->projectId));
         }
     }
 }

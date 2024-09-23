@@ -39,13 +39,13 @@ document.getElementById('inviteForm').addEventListener('submit', function(event)
     xhr.onload = function() {
         if (xhr.status === 200) {
             if (xhr.responseText !== 'Gửi mail thất bại') {
-                showNotification('Email sent successfully!', 'success');
+                showNotification(xhr.responseText, 'success');
                 document.getElementById('inviteForm').reset(); // Clear the form
             } else {
-                showNotification('Failed to send email. Please try again.', 'error');
+                showNotification(xhr.responseText, 'error');
             }
         } else {
-            showNotification('Unexpected response from server.', 'error');
+            showNotification(xhr.responseText, 'error');
         }
     };
 

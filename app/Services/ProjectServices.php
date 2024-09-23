@@ -48,6 +48,8 @@ class ProjectServices
                 $project->save();
             }
             $invitedPeople = json_decode(data_get($data, 'people'));
+            $ownerEmail = array(auth()->user()->email);
+            $invitedPeople = array_diff($invitedPeople, $ownerEmail);
 
             if (count($invitedPeople)) {
                 ProjectInviteJob::dispatch($invitedPeople, $project->project_id, $project->project_name);
@@ -64,6 +66,12 @@ class ProjectServices
     {
         $userId = auth()->user()->id;
         try {
+            $project = $this->projectRepository->find($projetId);
+
+            if ($project->owner_id === $userId) {
+                return true;
+            }
+
             if ($this->projectMemberRepository->where([
                 ['project_id', '=', $projetId],
                 ['user_id', '=', $userId],
@@ -119,6 +127,7 @@ class ProjectServices
                 'doneCount' => $doneCount,
             ],
             'members' => $members,
+            'ownerId' => $owner->id,
         ];
     }
 
@@ -141,5 +150,17 @@ class ProjectServices
             Log::error($e->getMessage());
             return 0;
         }
+    }
+
+    public function get(int $projectId) {
+        $project = $this->projectRepository->find($projectId);
+        $emails = $project->members()->get();
+
+
+        return [
+            'name' => $project->project_name,
+            'description' => Storage::disk('gcs')->get($project->description),
+//            'emails' =>
+        ];
     }
 }

@@ -44,6 +44,10 @@ Route::middleware(['authentication:web'])->group(function () {
 
        Route::get('/{projectID}', [ProjectController::class, 'index']);
        Route::post('/{projectID}/add', [ProjectController::class, 'addMember']);
+
+       Route::get('/{projectID}/edit', [ProjectController::class, 'editView']);
+       Route::post('/{projectID}/edit', [ProjectController::class, 'edit']);
+
        Route::get('/{projectID}/task/create', [TaskController::class, 'taskCreateView'])
 ;//       Route::get('/edit/{id}', function ($id) {
 //           return view('project_edit')->with('id', $id);

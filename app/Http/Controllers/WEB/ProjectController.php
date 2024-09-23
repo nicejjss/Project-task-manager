@@ -21,7 +21,8 @@ class ProjectController extends BaseController
             'projectId' => $data['projectId'],
             'project' => $data['projectDescription'],
             'tasks' => $data['tasks'],
-            'members' =>$data['members']
+            'members' =>$data['members'],
+            'ownerId' => $data['ownerId'],
         ]);
     }
 
@@ -59,5 +60,17 @@ class ProjectController extends BaseController
             case 3: return 'Thành viên đã có trong dự án';
             default: return 'Gửi mail thất bại';
         }
+    }
+
+    public function editView(string $projectID)
+    {
+        $projectID = (int)$projectID;
+        $data = $this->projectServices->get($projectID);
+        return view('project.edit', $data);
+    }
+
+    public function edit()
+    {
+//        return view('project.edit');
     }
 }

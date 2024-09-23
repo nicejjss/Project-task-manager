@@ -5,21 +5,23 @@
         <h2 id="description">Mô tả:</h2>
         <div id="content-detail">
             <div id="markdown-content">
-                <!-- Raw Markdown will be inserted here -->
+                {!! $project !!}
             </div>
             <div id="right-side">
                 <div id="status-text">Trạng Thái Công Việc</div>
                 <div>
                     <canvas id="myChart"></canvas>
                 </div>
-                <div id="invite-text">Mời Thành Viên</div>
-                <form id="inviteForm" action="/project/{{$projectId}}/add" method="post">
-                    @csrf()
-                    <input type="text" name="projectID" value="{{$projectId}}" hidden="">
-                    <input required name="email" type="email"/>
-                    <input type="submit" value="Mời"/>
-                </form>
-
+                @if($ownerId === auth()->user()->id)
+                    <div id="invite-text">Mời Thành Viên</div>
+                    <form id="inviteForm" action="/project/{{$projectId}}/add" method="post">
+                        @csrf()
+                        <input type="text" name="projectID" value="{{$projectId}}" hidden="">
+                        <input required name="email" type="email"/>
+                        <input type="submit" value="Mời"/>
+                    </form>
+                @else
+                @endif
                 <div id="notification-mail" class="notification-mail"></div>
 
                 <!-- Toggle Button -->
@@ -46,18 +48,6 @@
         </div>
         <!-- Include marked.js from a CDN -->
         <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-        <script>
-            // Your raw Markdown content passed from Laravel (output safely)
-            let rawMarkdownContent = @json($project);
-
-            // Convert the raw Markdown to HTML using marked.js
-            let htmlContent = marked.parse(rawMarkdownContent);
-
-            // Insert the converted HTML into the page
-            document.getElementById('markdown-content').innerHTML = htmlContent;
-        </script>
-
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
             var ctx = document.getElementById('myChart').getContext('2d');

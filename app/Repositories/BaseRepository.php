@@ -113,6 +113,6 @@ abstract class BaseRepository
     }
 
     public function where(array $expression) {
-        return $this->model->where([$expression]);
+        return $this->model->where($expression);
     }
 }
