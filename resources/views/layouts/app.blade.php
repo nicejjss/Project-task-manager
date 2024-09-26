@@ -51,7 +51,44 @@
         <li>Không có thông báo nào</li>
     </ul>
 </div>
+<style>
+    .container {
+        margin: 20px;
+    }
 
+    .toast {
+        visibility: hidden;
+        min-width: 250px;
+        margin-left: -125px;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        border-radius: 2px;
+        padding: 16px;
+        position: fixed;
+        z-index: 1;
+        right: 30px;
+        top: 30px;
+        font-size: 17px;
+        opacity: 0;
+        transition: opacity 0.5s, transform 0.5s;
+        transform: translateX(100%);
+    }
+
+    .toast.show {
+        visibility: visible;
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .toast.hide {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+</style>
+
+<div id="toast" class="toast"></div>
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script>
 
@@ -67,4 +104,27 @@
         console.log(data);
         alert(JSON.stringify(data));
     });
+
+    function showToast(type) {
+        const toast = document.getElementById('toast');
+
+        switch (type) {
+            case 1: toast.innerText = 'Thành Công';
+                toast.style.backgroundColor = '#7DD3AE';
+                toast.className = 'toast show'; break;
+
+            case 2:toast.innerText = 'Thất Bại';
+                toast.style.backgroundColor = '#FF0000';
+                toast.className = 'toast show'; break;
+
+            default:toast.innerText = toastText;
+                toast.style.backgroundColor = toastColor;
+                toast.className = 'toast show';break
+        }
+
+
+        setTimeout(() => {
+            toast.className = 'toast hide';
+        }, 2000);
+    }
 </script>

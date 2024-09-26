@@ -147,3 +147,77 @@ button:hover {
     cursor: pointer;
 }
 
+#invitedList li {
+    list-style: none;
+    background-color: var(--secondary-color);
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+/* Style for the loading overlay */
+#loadingOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    z-index: 1000;
+}
+
+/* Center the loading indicator */
+#loadingIndicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #4caf93;
+    font-size: 24px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.note-editor.note-frame .note-editing-area .note-editable, .note-editor.note-airframe .note-editing-area .note-editable {
+    max-height: 450px !important; /* Ensure max height is applied */
+    overflow-y: auto;  /* Enable vertical scrolling */
+    padding-left: 20px; /* Add padding to the left */
+    padding-right: 20px; /* Add padding to the right */
+}
+.note-resize {
+    display: none !important; /* Hide the resize bar */
+}
+
+.modal-backdrop{
+    display: none !important;
+}
+
+.note-modal .modal-dialog {
+    outline: 0;
+    border-radius: 5px;
+}
+
+#right-column{
+    position: relative;
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+}
+
+#backBtn {
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+    background-color: #af4c4c;
+}
+
+#backBtn:hover {
+    background-color: #8e3838;
+}
+
+#backBtn:active {
+    background-color: #8e3838;
+}

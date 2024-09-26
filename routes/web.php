@@ -42,13 +42,18 @@ Route::middleware(['authentication:web'])->group(function () {
        Route::post('/store', [ProjectController::class, 'store']);
        Route::get('/invite/{projectID}', [ProjectController::class, 'invite']);
 
-       Route::get('/{projectID}', [ProjectController::class, 'index']);
-       Route::post('/{projectID}/add', [ProjectController::class, 'addMember']);
+       Route::prefix('{projectID}')->group(function () {
+           Route::get('/', [ProjectController::class, 'index']);
+           Route::post('/add', [ProjectController::class, 'addMember']);
+           Route::get('/edit', [ProjectController::class, 'editView']);
+           Route::post('/edit', [ProjectController::class, 'edit']);
 
-       Route::get('/{projectID}/edit', [ProjectController::class, 'editView']);
-       Route::post('/{projectID}/edit', [ProjectController::class, 'edit']);
+           Route::get('/task/create', [TaskController::class, 'taskCreateView']);
+       });
 
-       Route::get('/{projectID}/task/create', [TaskController::class, 'taskCreateView'])
+
+
+
 ;//       Route::get('/edit/{id}', function ($id) {
 //           return view('project_edit')->with('id', $id);
 //       });

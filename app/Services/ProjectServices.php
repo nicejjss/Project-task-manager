@@ -8,6 +8,7 @@ use App\Jobs\ProjectInviteJob;
 use App\Repositories\ProjectMemberRepository;
 use App\Repositories\ProjectRepository;
 use App\Repositories\UserRepository;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -154,13 +155,55 @@ class ProjectServices
 
     public function get(int $projectId) {
         $project = $this->projectRepository->find($projectId);
-        $emails = $project->members()->get();
+        $members = $project->members()->get();
 
 
         return [
+            'projectId' => $project->project_id,
             'name' => $project->project_name,
             'description' => Storage::disk('gcs')->get($project->description),
-//            'emails' =>
+            'members' => $members,
         ];
+    }
+
+    public function edit($data) {
+
+        try {
+            $name = data_get($data, 'name');
+            $file = data_get($data, 'description');
+            $projectId = data_get($data, 'projectID');
+            $project = $this->projectRepository->find($projectId);
+            $membersEmails = Arr::flatten($project->members()->join('users', 'users.id', '=', 'projectmembers.user_id')
+                                ->get('email')->toArray());
+
+            if($file){
+                Storage::disk('gcs')->delete($project->description);
+                Storage::disk('gcs')->put($project->description, file_get_contents($file), 'public');
+            }
+            $invitedPeople = json_decode(data_get($data, 'people'));
+            $ownerEmail = array(auth()->user()->email);
+            $invitedPeople = array_diff($invitedPeople, $ownerEmail);
+
+            $removeEmails= array_diff($membersEmails, $invitedPeople); // Items in arr1 but not in arr2
+            $addEmails = array_diff($invitedPeople, $membersEmails); // Items in arr2 but not in arr1
+            $removeIDs = Arr::flatten($this->userRepository->whereIn('email', $removeEmails)->get(['id'])->toArray());
+
+            if (count($addEmails)) {
+                ProjectInviteJob::dispatch($addEmails, $project->project_id, $project->project_name);
+            }
+
+            if (count($removeIDs)) {
+                $this->projectMemberRepository->whereIn('user_id', $removeIDs)->delete();
+            }
+
+            $project = $this->projectRepository->update($projectId ,[
+                'project_name' => $name,
+            ]);
+
+            return $project->project_id;
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return false;
+        }
     }
 }

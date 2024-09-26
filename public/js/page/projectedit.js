@@ -6,11 +6,10 @@ $(document).ready(function() {
             ['style', ['style']], // Adding the style button
             ['font', ['bold', 'italic', 'underline', 'clear']],
             ['fontname', ['fontname']],
+            ['insert', ['link']], // Add link toolbar
             ['fontsize', ['fontsize']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']],
-            ['view', ['codeview']]  // Adding the codeview button
         ],
         styleTags: [
             'p',
@@ -21,7 +20,7 @@ $(document).ready(function() {
 });
 
 // Array to hold invited people
-let invitedPeople = [];
+// let invitedPeople = [];
 
 // Handle Add Person button click
 document.getElementById('addPersonBtn').addEventListener('click', function() {
@@ -69,6 +68,7 @@ document.getElementById('projectForm').addEventListener('submit', function(event
     loadingOverlay.style.display = 'block';
 
     const projectName = document.getElementById('projectName').value;
+    const projectID = document.getElementById('projectID').value;
     const content = $('#editor').summernote('code');
 
     // Create a Blob object with the Markdown content
@@ -79,9 +79,10 @@ document.getElementById('projectForm').addEventListener('submit', function(event
     formData.append('description', markdownBlob, `${projectName}.html`);
     formData.append('name', projectName);
     formData.append('people', JSON.stringify(invitedPeople));
+    formData.append('projectID', projectID);
 
     // Post the FormData object (replace URL with your actual endpoint)
-    fetch('http://127.0.0.1:8000/project/store', {
+    fetch('http://127.0.0.1:8000/project/{{$projectId}}/edit', {
         method: 'POST',
         headers: {
             "X-CSRF-Token": document.querySelector('input[name=_token]').value

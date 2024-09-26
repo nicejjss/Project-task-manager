@@ -115,4 +115,8 @@ abstract class BaseRepository
     public function where(array $expression) {
         return $this->model->where($expression);
     }
+
+    public function whereIn(string $collumn, array $items) {
+        return $this->model->whereIn($collumn, $items);
+    }
 }

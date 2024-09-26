@@ -6,11 +6,10 @@ $(document).ready(function() {
             ['style', ['style']], // Adding the style button
             ['font', ['bold', 'italic', 'underline', 'clear']],
             ['fontname', ['fontname']],
+            ['insert', ['link']], // Add link toolbar
             ['fontsize', ['fontsize']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
-            ['height', ['height']],
-            ['view', ['codeview']]  // Adding the codeview button
         ],
         styleTags: [
             'p',

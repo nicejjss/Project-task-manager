@@ -71,6 +71,6 @@ class ProjectController extends BaseController
 
     public function edit()
     {
-//        return view('project.edit');
+        return $this->projectServices->edit(request()->all());
     }
 }

@@ -6,6 +6,7 @@ use App\Custom\Traits\JsonResponseTrait;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class BaseRequest extends FormRequest
@@ -57,5 +58,10 @@ class BaseRequest extends FormRequest
     protected function addError(Validator $validator, string $field = null, string $message = null): \Illuminate\Support\MessageBag
     {
          return $validator->errors()->add($field, $message);
+    }
+
+    protected function failedAuthorization()
+    {
+        return redirect()->back();
     }
 }

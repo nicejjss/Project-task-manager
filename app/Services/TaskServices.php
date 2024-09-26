@@ -26,7 +26,7 @@ class TaskServices
     public function createView(int $projectId): array
     {
         $members = [];
-        $project = $this->projectRepository->where(['project_id' , '=', $projectId])->first();
+        $project = $this->projectRepository->where([['project_id' , '=', $projectId]])->first();
         $owner = $project->owner;
         $members[] = [
             'avatar' => $owner->avatar,

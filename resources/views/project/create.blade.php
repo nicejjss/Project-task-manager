@@ -2,43 +2,6 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/page/projectcreate.css">
-<style>
-    /* Style for the loading overlay */
-    #loadingOverlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
-        z-index: 1000;
-    }
-
-    /* Center the loading indicator */
-    #loadingIndicator {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #4caf93;
-        font-size: 24px;
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .note-editor.note-frame .note-editing-area .note-editable, .note-editor.note-airframe .note-editing-area .note-editable {
-         max-height: 450px !important; /* Ensure max height is applied */
-         overflow-y: auto;  /* Enable vertical scrolling */
-         padding-left: 20px; /* Add padding to the left */
-         padding-right: 20px; /* Add padding to the right */
-     }
-    .note-resize {
-        display: none !important; /* Hide the resize bar */
-    }
-</style>
 <main class="content">
     <div class="container">
         <!-- Title -->
@@ -56,7 +19,7 @@
 
                     <!-- QuillJS WYSIWYG Editor -->
                     <label for="projectDescription">Mô Tả</label>
-                    <textarea  id="editor" style="height: 450px;"></textarea >
+                    <div  id="editor" style="height: 450px;"></div >
 
                     <!-- Create Project Button -->
                     <button type="submit" id="createBtn">Tạo Dự Án</button>
