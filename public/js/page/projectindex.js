@@ -25,37 +25,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-document.getElementById('inviteForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the default form submission
-
-    var xhr = new XMLHttpRequest();
-    var url = this.action;
-    var formData = new FormData(this);
-
-    xhr.open('POST', url, true);
-    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-    xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('input[name="_token"]').value);
-
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            if (xhr.responseText !== 'Gửi mail thất bại') {
-                showNotification(xhr.responseText, 'success');
-                document.getElementById('inviteForm').reset(); // Clear the form
-            } else {
-                showNotification(xhr.responseText, 'error');
-            }
-        } else {
-            showNotification(xhr.responseText, 'error');
-        }
-    };
-
-    xhr.onerror = function() {
-        showNotification('An error occurred during the request.', 'error');
-    };
-
-    xhr.send(formData);
-});
-
 function showNotification(message, type) {
     var notification = document.getElementById('notification-mail');
     notification.textContent = message;
@@ -69,4 +38,41 @@ function showNotification(message, type) {
     setTimeout(function() {
         notification.style.display = 'none';
     }, 3000);
+}
+
+function toggleMemberList() {
+    var emailDropdown = document.getElementById("member-email-dropdown");
+    emailDropdown.style.display = emailDropdown.style.display === "none" ? "block" : "none";
+}
+
+function filterMemberEmails() {
+    var input, filter, emailList, li, span, i, txtValue;
+    input = document.getElementById("memberSearchInput");
+    filter = input.value.toUpperCase();
+    emailList = document.getElementById("memberList");
+    li = emailList.getElementsByTagName("li");
+
+    for (i = 0; i < li.length; i++) {
+        span = li[i].getElementsByClassName("member-email")[0];
+        txtValue = span.textContent || span.innerText;
+        if (txtValue.toUpperCase().includes(filter)) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+
+// Optional: Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+    if (
+        !event.target.matches('.member-dropdown-btn') &&
+        !event.target.matches('#member-email-dropdown') &&
+        !event.target.closest('#member-email-dropdown')
+    ) {
+        var emailDropdown = document.getElementById("member-email-dropdown");
+        if (emailDropdown.style.display === "block") {
+            emailDropdown.style.display = "none";
+        }
+    }
 }

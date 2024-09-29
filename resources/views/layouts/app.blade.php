@@ -13,19 +13,19 @@
 <header class="header">
     <div class="logo-section">
         <div class="logo">
-            <a style="color: #111" href="/"><img style="width: 130px;" src="{{asset('logo.png')}}"></a>
+            <a style="color: #111" href="/"><img style="width: 150px;" src="{{asset('logo.png')}}"></a>
         </div>
-        <a href="/" class="projects-link">Trang chủ</a>
+        <a style="text-decoration: none;" href="/" class="projects-link">Dự Án</a>
     </div>
     <div class="nav-right">
         <div class="dropdown">
-            <img src="{{ $user['avatar'] ?? asset('avatar.png') }}" alt="Avatar" class="avatar-app">
-            <div class="dropdown-content">
+            <img src="{{ $avatar ?? asset('avatar.png') }}" alt="Avatar" class="avatar-app">
+            <div style="background-color: white" class="dropdown-content">
                 <div style="color: #b5b5b5;
     font-size: 14px;
     padding: 10px 20px;">Xin chào {{$user['name']}}</div>
-                <a href="#">Personal Info</a>
-                <a href="{{route('logout')}}">Logout</a>
+                <a style="font-size: 16px" href="/user">Thông tin cá nhân</a>
+                <a style="font-size: 16px" href="{{route('logout')}}">Đăng xuất</a>
             </div>
         </div>
         <div class="notification" style="font-size: 20px">
@@ -33,12 +33,6 @@
         </div>
     </div>
 </header>
-
-<!-- Notification Vertical Bar -->
-<div class="notification" style="font-size: 20px">
-    <i id="notification-icon" class="fa-solid fa-bell notification-icon"></i>
-    <span id="notification-badge" class="badge" style="display: none;"></span>
-</div>
 
 <!-- Notification Vertical Bar -->
 <div class="notification-bar" id="notification-bar">
@@ -63,10 +57,10 @@
         background-color: #333;
         color: #fff;
         text-align: center;
-        border-radius: 2px;
+        border-radius: 7px;
         padding: 16px;
         position: fixed;
-        z-index: 1;
+        z-index: 9999;
         right: 30px;
         top: 30px;
         font-size: 17px;
@@ -105,19 +99,19 @@
         alert(JSON.stringify(data));
     });
 
-    function showToast(type) {
+    function showToast(type, message = null) {
         const toast = document.getElementById('toast');
 
         switch (type) {
-            case 1: toast.innerText = 'Thành Công';
+            case 1: toast.innerText = message ? message : 'Thành Công';
                 toast.style.backgroundColor = '#7DD3AE';
                 toast.className = 'toast show'; break;
 
-            case 2:toast.innerText = 'Thất Bại';
+            case 2:toast.innerText = message ? message : 'Thất Bại';
                 toast.style.backgroundColor = '#FF0000';
                 toast.className = 'toast show'; break;
 
-            default:toast.innerText = toastText;
+            default:toast.innerText = 'Cố lỗi xảy ra';
                 toast.style.backgroundColor = toastColor;
                 toast.className = 'toast show';break
         }
@@ -128,3 +122,4 @@
         }, 2000);
     }
 </script>
+<script src="/js/layouts/app.js"></script>

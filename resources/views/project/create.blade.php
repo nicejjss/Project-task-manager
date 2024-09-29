@@ -2,11 +2,26 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/page/projectcreate.css">
+<style>
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .projects-link {
+        color: #707070;
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: all 0.1s linear;
+        font-size: 20px;
+    }
+</style>
 <main class="content">
     <div class="container">
         <!-- Title -->
-        <h2 style="text-align: center;">Thêm Dự Án</h2>
-
+        <h2 style="text-align: center;font-weight: 600;">Thêm Dự Án</h2>
         <!-- Form and Email Invitation Section Side by Side -->
         <div style="display: flex; justify-content: space-between;">
             <!-- Main Form -->

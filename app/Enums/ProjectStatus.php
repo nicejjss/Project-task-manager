@@ -7,7 +7,7 @@ use BenSampo\Enum\Enum;
 final class ProjectStatus extends Enum
 {
     const MESSAGE = [
-        'Chờ',
+        'Mở',
         'Đang Thực Hiện',
         'Đã Đóng',
     ];
@@ -15,4 +15,9 @@ final class ProjectStatus extends Enum
     const Open = 0;
     const Progressing = 1;
     const Closed = 2;
+
+    public static function MESSAGE($status): string
+    {
+        return self::MESSAGE[$status];
+    }
 }

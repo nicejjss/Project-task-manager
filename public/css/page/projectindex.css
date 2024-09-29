@@ -219,3 +219,121 @@ input[type="submit"] {
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
+
+/* Basic styles for the dropdown button */
+.member-dropdown-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
+.member-dropdown-btn:hover, .member-dropdown-btn:focus {
+    background-color: #45a049;
+}
+
+/* Dropdown content container */
+.member-dropdown-content {
+    position: relative;
+    background-color: white;
+    border: 1px solid #ddd;
+    max-width: 300px;
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+/* Style for the search input field */
+#memberSearchInput {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+}
+
+/* Style for the list of emails */
+#memberList {
+    list-style-type: none;
+    padding-left: 0;
+    margin-top: 0;
+}
+
+/* Individual list item styling */
+.member-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Avatar image styling */
+.member-item img.member-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+/* Email text styling */
+.member-item .member-email {
+    font-size: 14px;
+    color: #333;
+}
+
+/* Hover effect on list items */
+.member-item:hover {
+    background-color: #f9f9f9;
+}
+
+/* Media query for responsiveness */
+@media (max-width: 400px) {
+    .member-dropdown-content {
+        max-width: 100%;
+    }
+}
+
+.status-container {
+    display: flex;
+}
+
+.title {
+    margin-right: 10px;
+}
+
+.status {
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 10px;
+    width: 150px;
+    text-align: center;
+}
+
+/* Open status */
+.open {
+    background-color: #4caf59;
+    color: white;
+}
+
+/* Processing status */
+.processing {
+    background-color: #07a8ff;
+    color: #ffffff;
+}
+
+/* Closed status */
+.closed {
+    background-color: #F44336;
+    color: white;
+}

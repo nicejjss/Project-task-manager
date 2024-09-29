@@ -11,6 +11,7 @@ use App\Repositories\UserRepository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProjectServices
 {
@@ -40,7 +41,7 @@ class ProjectServices
             $file = data_get($data, 'description');
 
             if($file){
-                $fileName = 'project_' . $project->project_id;
+                $fileName = 'project_' . $project->project_id . '_' . Str::random(10);
                 $ext = $file->getClientOriginalExtension();
                 $path = $fileName . '.' . $ext;
                 Storage::disk('gcs')->put('project/' . $path, file_get_contents($file), 'public');
@@ -99,32 +100,54 @@ class ProjectServices
         $tasks = $project->tasks()->get();
         $taskCount = $tasks->count();
 
+        $status = [
+            'class' => strtolower(ProjectStatus::getKey($project->status)),
+            'text' => ProjectStatus::MESSAGE($project->status),
+        ];
+
         $openCount = $tasks->where(['status', '=', TaskStatus::Open])->count();
         $inProgressCount = $tasks->where(['status', '=', TaskStatus::Progressing])->count();
-        $acceptedCount = $tasks->where(['status', '=', TaskStatus::AcceptedTime])->count();
         $doneCount = $tasks->where(['status', '=', TaskStatus::Done])->count();
 
         $projectDescription = Storage::disk('gcs')->get($project->description);
 
         $owner = $project->owner;
+        $ownerAvatar = $owner->avatar;
+
+        if ($ownerAvatar) {
+            if (!Str::contains($ownerAvatar, 'http')) {
+                $ownerAvatar = Storage::disk('gcs')->url($ownerAvatar);
+            }
+        }
+
         $members[] = [
-            'avatar' => $owner->avatar,
+            'avatar' => $ownerAvatar,
             'email' => $owner->email,
         ];
 
         $projectMems = $project->members()->join('users', 'users.id', '=', 'projectmembers.user_id')->get()->select(['email', 'avatar'])->toArray();
         foreach ($projectMems as $projectMember) {
+            $memberAvatar = data_get($projectMember, 'avatar');
+
+            if ($memberAvatar) {
+                if (!Str::contains($memberAvatar, 'http')) {
+                    $memberAvatar = Storage::disk('gcs')->url($memberAvatar);
+                }
+            }
+
+            $projectMember['avatar'] = $memberAvatar;
             $members[] = $projectMember;
         }
 
         return [
             'projectId' => $projectId,
             'projectDescription' => $projectDescription,
+            'isClose' => $project->status === ProjectStatus::Closed,
+            'status' => $status,
             'tasks' => [
                 'count' => $taskCount,
                 'openCount' => $openCount,
                 'inProgressCount' => $inProgressCount,
-                'acceptedCount' => $acceptedCount,
                 'doneCount' => $doneCount,
             ],
             'members' => $members,
@@ -178,7 +201,10 @@ class ProjectServices
 
             if($file){
                 Storage::disk('gcs')->delete($project->description);
-                Storage::disk('gcs')->put($project->description, file_get_contents($file), 'public');
+                $fileName = 'project_' . $project->project_id . '_' . Str::random(10);
+                $ext = $file->getClientOriginalExtension();
+                $path = $fileName . '.' . $ext;
+                Storage::disk('gcs')->put($path, file_get_contents($file), 'public');
             }
             $invitedPeople = json_decode(data_get($data, 'people'));
             $ownerEmail = array(auth()->user()->email);
@@ -198,6 +224,7 @@ class ProjectServices
 
             $project = $this->projectRepository->update($projectId ,[
                 'project_name' => $name,
+                'description' => $path,
             ]);
 
             return $project->project_id;
@@ -205,5 +232,16 @@ class ProjectServices
             Log::error($e->getMessage());
             return false;
         }
+    }
+
+    public function closeProject(int $projectId): bool
+    {
+        if ($this->projectRepository->update($projectId, [
+           'status' => ProjectStatus::Closed,
+        ])) {
+            return true;
+        };
+
+        return false;
     }
 }

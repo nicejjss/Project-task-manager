@@ -19,7 +19,7 @@
     background-color: white;
     position: absolute;
     width: 100%;
-    top: 50%;
+    top: 52%;
     left: 50%;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -208,10 +208,15 @@ button:hover {
 }
 
 #backBtn {
-    width: 100%;
-    bottom: 0;
-    position: absolute;
     background-color: #af4c4c;
+    padding: 10px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    text-align: center;
 }
 
 #backBtn:hover {
@@ -220,4 +225,19 @@ button:hover {
 
 #backBtn:active {
     background-color: #8e3838;
+}
+
+.btn-function {
+    display: flex;
+}
+
+#back-link {
+    width: 50%;
+    display: inline-grid;
+    margin-left: 30px;
+    text-decoration: none;
+}
+
+input {
+    outline: none;
 }

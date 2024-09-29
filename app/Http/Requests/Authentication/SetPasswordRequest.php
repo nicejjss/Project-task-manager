@@ -64,7 +64,7 @@ class SetPasswordRequest extends BaseRequest
                 }
 
                 $this->user_info['email'] = $email;
-                $this->user_info['new_password'] = $newPassword;
+                $this->user_info['confirm_pass'] = $newPassword;
             }
         });
     }

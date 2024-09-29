@@ -33,7 +33,7 @@ class ActiveUserService extends BaseService
             $email = data_get($credentials, 'email');
             $user = Auth::attemptByCredentials(['email' => $email]);
             $user->update([
-                'password' => md5(data_get($credentials, 'new_password')),
+                'password' => md5(data_get($credentials, 'confirm_pass')),
             ]);
             return true;
         } catch (\Exception $e) {

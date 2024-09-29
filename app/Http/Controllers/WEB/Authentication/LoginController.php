@@ -6,7 +6,9 @@ use App\Http\Controllers\WEB\BaseController as Controller;
 use App\Http\Requests\Authentication\LoginRequest;
 use App\Services\Authentication\LoginService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class LoginController extends Controller

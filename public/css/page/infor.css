@@ -1,0 +1,248 @@
+
+.container {
+    margin: 0 auto;
+    justify-content: space-between;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap; /* Allow wrapping */
+    max-width: 1100px;
+}
+
+.user-info {
+    flex: 2;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px 0 10px 7px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #ffffff;
+    outline: none;
+}
+
+textarea {
+    height: 300px;
+    resize: none;
+    font-size: 20px;
+    font-family: sans-serif;
+}
+
+.avatar-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+#changeAvatarBtn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.error-msg {
+    color: red;
+    margin-top: 10px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn {
+    background-color: #04AA6D;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0 20px;
+    width: 20%;
+    max-width: 230px;
+}
+
+.btn:hover {
+    background-color: #039a5e;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 99;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    /* margin: 15% auto; */
+    padding: 20px;
+    position: absolute;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 25%;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+}
+
+#page-text {
+    text-align: center;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+/* Media Query for Responsive Layout */
+@media (max-width: 600px) {
+    .container {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    .avatar-section {
+        order: -1; /* Move avatar section to the top */
+        margin-bottom: 20px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .btn {
+        width: 65%;
+        margin: 0;
+    }
+
+    #page-text {
+        margin-top: 375px;
+    }
+}
+
+#content {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    transform: translate(0, -50%);
+}
+
+form {
+    display: flex;
+}
+
+/* Keep the color #04AA6D for the Save button */
+#saveBtn {
+    background-color: #04AA6D;
+}
+
+/* Apply different colors for the other buttons */
+#changePasswordBtn {
+    background-color: #ffbe33; /* A different color for "Change Password" button */
+}
+
+#cancelBtn {
+    background-color: #3498DB; /* A different color for "Cancel" button */
+}
+
+/* Ensure button styles are consistent */
+.btn {
+    color: white; /* Text color */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Style for the loading overlay */
+#loadingOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    z-index: 1000;
+}
+
+.lds-dual-ring,
+.lds-dual-ring:after {
+    box-sizing: border-box;
+}
+.lds-dual-ring {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+}
+.lds-dual-ring:after {
+    content: "";
+    display: block;
+    width: 64px;
+    height: 64px;
+    right: 50%;
+    top: 45%;
+    position: fixed;
+    margin: 8px;
+    border-radius: 50%;
+    border: 6.4px solid #ff000000;
+    border-color: var(--primary-color) transparent var(--primary-color);
+    animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

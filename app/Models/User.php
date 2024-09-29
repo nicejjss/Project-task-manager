@@ -18,6 +18,7 @@ class User extends Authenticate
         'email',
         'password',
         'avatar',
+        'description',
         'google_id',
         'access_token',
         'refresh_token',
@@ -30,7 +31,6 @@ class User extends Authenticate
      */
     protected $hidden = [
         'password',
-        'access_token',
         'refresh_token',
         'google_id',
         'created_at',

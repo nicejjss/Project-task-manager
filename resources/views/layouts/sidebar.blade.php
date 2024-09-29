@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="/css/layouts/sidebar.css">
 <!-- Vertical Navigation -->
 <nav class="sidebar" id="sidebar">
     <!-- Hamburger Icon -->
@@ -14,6 +15,19 @@
     </ul>
 </nav>
 
-<div id="project-name">
-    Dự Án: Project
+<div id="project-name-select" class="project-dropdown">
+    <button class="dropbtn" onclick="toggleDropdown()">
+        Dự Án: {{$currentProject['project_name']}} ▼
+    </button>
+    <div id="dropdown-content" class="project-dropdown-content" role="menu">
+        <input type="text" placeholder="Search..." id="searchInput" onkeyup="filterProjects()" aria-label="Search projects">
+        <div id="projectList">
+            <span id="span-title">Dự án của tôi:</span>
+            <!-- Example projects, replace with your actual project names -->
+            @foreach($otherProjects as $otherProject)
+                <a href="/project/{{$otherProject['project_id']}}" role="menuitem">{{$otherProject['project_name']}}</a>
+            @endforeach
+        </div>
+    </div>
 </div>
+<script type="text/javascript" src="/js/layouts/sidebar.js"></script>

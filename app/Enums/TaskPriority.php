@@ -20,4 +20,9 @@ final class TaskPriority extends Enum
     const High = 0;
     const Mid = 1;
     const Low = 2;
+
+    public static function MESSAGE($status): string
+    {
+        return self::MESSAGE[$status];
+    }
 }

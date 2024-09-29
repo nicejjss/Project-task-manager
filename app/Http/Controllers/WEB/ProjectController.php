@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\WEB;
 
+use App\Http\Requests\Project\CloseRequest;
 use App\Http\Requests\Project\IndexRequest;
 use App\Services\ProjectServices;
 use Illuminate\Support\Facades\Log;
@@ -20,6 +21,8 @@ class ProjectController extends BaseController
         return view('project.index', [
             'projectId' => $data['projectId'],
             'project' => $data['projectDescription'],
+            'status' => $data['status'],
+            'isClose' => $data['isClose'],
             'tasks' => $data['tasks'],
             'members' =>$data['members'],
             'ownerId' => $data['ownerId'],
@@ -72,5 +75,14 @@ class ProjectController extends BaseController
     public function edit()
     {
         return $this->projectServices->edit(request()->all());
+    }
+
+    public function close(CloseRequest $request, int $projectID): bool
+    {
+        if ($request->authorize()) {
+            return $this->projectServices->closeProject($projectID);
+        }
+
+        return false;
     }
 }

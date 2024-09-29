@@ -8,6 +8,7 @@ use App\Http\Controllers\WEB\Authentication\SignUpController;
 use App\Http\Controllers\WEB\HomeController;
 use App\Http\Controllers\WEB\ProjectController;
 use App\Http\Controllers\WEB\TaskController;
+use App\Http\Controllers\WEB\UserController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -37,7 +38,7 @@ Route::prefix('authentication')->group(function () {
 Route::middleware(['authentication:web'])->group(function () {
    Route::get('/', [HomeController::class, 'index']);
 
-   Route::prefix('project') ->group(function () {
+   Route::prefix('project')->group(function () {
        Route::get('/create', [ProjectController::class, 'createIndex'])->name('project.create');
        Route::post('/store', [ProjectController::class, 'store']);
        Route::get('/invite/{projectID}', [ProjectController::class, 'invite']);
@@ -47,32 +48,21 @@ Route::middleware(['authentication:web'])->group(function () {
            Route::post('/add', [ProjectController::class, 'addMember']);
            Route::get('/edit', [ProjectController::class, 'editView']);
            Route::post('/edit', [ProjectController::class, 'edit']);
+           Route::get('/close', [ProjectController::class, 'close']);
 
            Route::get('/task/create', [TaskController::class, 'taskCreateView']);
        });
-
-
-
-
-;//       Route::get('/edit/{id}', function ($id) {
-//           return view('project_edit')->with('id', $id);
-//       });
-//       Route::get('/view/{id}', function ($id) {
-//           return view('project_view')->with('id', $id);
-//       });
-//       Route::get('/delete/{id}', function ($id) {
-//           Storage::delete('project/'. $id. '.json');
-//           return redirect()->route('project.list');
-//       });
    });
-//    Route::get('/project', function () {
-//        ->with(['user' => session()->get('user'), 'key' => config('broadcasting.connections.pusher.key')]);
-//    });
+
+    Route::prefix('/user')->group(function () {
+       Route::get('/', [UserController::class, 'index']);
+       Route::post('/update', [UserController::class, 'update']);
+       Route::get('/change_password', [UserController::class, 'changePasswordIndex']);
+       Route::post('/change_password', [UserController::class, 'changePassword']);
+    });
 });
 
-Route::get('/user', function () {
-   dd(session()->get('user'));
-});
+
 
 Route::get('/calendar', function () {
     $client = new Google_Client();

@@ -47,7 +47,10 @@
                     </textarea >
 
                     <!-- Create Project Button -->
-                    <button type="submit" id="createBtn">Sửa Dự Án</button>
+                    <div class="btn-function">
+                        <button style="width: 100%" type="submit" id="createBtn">Sửa Dự Án</button>
+                        <a id="back-link" href="/project/{{$projectId}}"><div id="backBtn">Quay Lại</div></a>
+                    </div>
                 </form>
             </div>
 
@@ -84,8 +87,6 @@
                         </script>
                     @endforeach
                 </ul>
-
-                <a href="/project/{{$projectId}}"><button type="submit" id="backBtn">Quay Lại</button></a>
             </div>
         </div>
     </div>
