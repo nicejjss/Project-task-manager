@@ -1,66 +1,117 @@
 @include('layouts.app')
 <link rel="stylesheet" href="/css/page/home.css">
 <main class="content">
-    <div class="project-page">
-        <div class="container">
-            <!-- First Row: Projects Title and Create Project Link -->
-            <div class="row">
-                <h1>Dự án Tham Gia</h1>
-                <a href="{{route('project.create')}}" class="create-project-link">Tạo Dự Án</a>
+    <div class="container">
+        <h2>Dự Án Của Tôi</h2>
+        <form id="search" method="GET">
+            <!-- Search by project name -->
+            <div class="form-group">
+                <label for="projectName">Tên Dự Án:</label>
+                <input type="text" id="projectName" name="project_name" placeholder="Nhập tên dự án">
             </div>
 
-            <!-- Second Row: List of Projects -->
-            <div class="projects">
-                <ul id="projects-list">
-                    @if (count($projects))
-                        @foreach($projects as $project)
-                            <li>
-                                <a href="/project/{{$project['id']}}">
-                                    <div class="details">
-                                        {{$project['name']}} ({{$project['is_owner'] === 1 ? 'Owner' : 'Member'}})
-                                    </div>
-                                    <div class="info">
-                                        Công Việc: {{$project['tasks']}} <br>
-                                        Thành Viên: {{$project['members']}}
-                                    </div>
-                                </a>
-                            </li>
-                        @endforeach
-                    @else
-                        <h3 style="color: #909b95;">Chưa tham gia dự án nào</h3>
-                        <div style="color: #909b95;">Tạo mới dự án</div>
-                    @endif
-                    <!-- Projects will be dynamically injected here -->
-                </ul>
+            <!-- Search by status -->
+            <div class="form-group">
+                <label for="status">Trạng Thái:</label>
+                <select id="status" name="project_status">
+                    <option value="0">Tất Cả</option>
+                    <option value="1">Mở</option>
+                    <option value="2">Đang Phát Triển</option>
+                    <option value="3">Đã Đóng</option>
+                </select>
             </div>
 
-            <!-- Second Section: Tasks Assigned to Me -->
-            <div class="tasks">
-                <h1 style="margin-bottom: 20px">Công việc của bạn</h1>
-                <ul id="tasks-list">
-                    @if (count($tasks))
-                        @foreach($tasks as $task)
-                            <li>
-                                <a href="/task/{{$task['id']}}">
-                                    <div class="details">
-                                        <div class="task-project">{{$task['projectName']}}</div>
-                                        <div>{{$task['title']}}</div>
-                                    </div>
-                                    <div class="info">
-                                        Thời Gian: {{$task['dueDate']}} <br>
-                                        Trạng thái: {{$task['status']}}
-                                    </div>
-                                </a>
-                            </li>
-                        @endforeach
-                    @else
-                        <h3 style="color: #909b95;">Chưa có công việc nào</h3>
-                    @endif
-                </ul>
+            <!-- Search by user in project -->
+            <div class="form-group">
+                <label for="user">Tên Thành Viên:</label>
+                <input type="text" id="user" name="user_name" placeholder="Nhập tên thành viên">
             </div>
+
+            <!-- Sorting options -->
+            <div class="form-group">
+                <label for="sort">Sắp Xếp Theo:</label>
+                <select id="sort" name="sort">
+                    <option value="1">Tên dự án: A-Z</option>
+                    <option value="2">Tên dự án: Z-A</option>
+                    <option value="3">Ngày bắt đầu: tăng dần</option>
+                    <option value="4">Ngày bắt đầu: giảm dần dần</option>
+                    <option value="5">Người tham gia tham gia: tăng dần</option>
+                    <option value="6">Người tham gia: giảm dần</option>
+                    <option value="7">Số lượng CV: tăng dần</option>
+                    <option value="8">Số lượng CV: giảm dần</option>
+                </select>
+            </div>
+
+            <!-- Submit button -->
+            <div class="actions search-btn">
+                <button type="submit">Search</button>
+            </div>
+        </form>
+
+        <!-- Project Results Section -->
+        <div class="project-list" id="projectList">
+           @foreach($projects as $project)
+                <div class="project-card">
+                    <h3>{{$project->project_name}}</h3>
+                    <p>Status: <span class="status"> {{$project->statusText}}</span></p>
+                    <p>Start Date: {{$project->created_at}}</p>
+                    <button class="view-btn">View Details</button>
+                </div>
+           @endforeach
         </div>
-    </div>
 
-    <script src="/js/page/home.js"> </script>
+        <!-- Hover Info Box (for displaying task details) -->
+        <div class="hover-info" id="hoverInfo"></div>
+    </div>
 </main>
+<script>
+    // Get references to project list and hover info box
+    const projectList = document.getElementById('projectList');
+    const hoverInfo = document.getElementById('hoverInfo');
+
+    // Function to update the hover info content
+    function updateHoverInfo(project) {
+        hoverInfo.innerHTML = `
+                <p>Tasks Created: ${project.tasks.created}</p>
+                <p>Tasks Open: ${project.tasks.open}</p>
+                <p>Tasks Finished: ${project.tasks.finished}</p>
+                <p>Tasks Closed: ${project.tasks.closed}</p>
+            `;
+    }
+
+    projectCard = document.getElementsByName('project-card')[0];
+    // Add mouseover event to show task details beside the cursor
+    projectCard.addEventListener('mousemove', (e) => {
+        updateHoverInfo(project);  // Update the task info for this project
+
+        // Calculate the position of the hover box
+        let hoverLeft = e.clientX + 20;
+        let hoverTop = e.clientY + 20;
+
+        // Get the dimensions of the hover box
+        const hoverWidth = hoverInfo.offsetWidth;
+        const hoverHeight = hoverInfo.offsetHeight;
+
+        // Adjust the position if the hover box goes off-screen
+        if (hoverLeft + hoverWidth > window.innerWidth) {
+            hoverLeft = e.clientX - hoverWidth - 20;
+        }
+        if (hoverTop + hoverHeight > window.innerHeight) {
+            hoverTop = e.clientY - hoverHeight - 20;
+        }
+
+        // Set the position of the hover box
+        hoverInfo.style.left = hoverLeft + 'px';
+        hoverInfo.style.top = hoverTop + 'px';
+        hoverInfo.style.display = 'block';  // Show the hover info box
+    });
+
+
+    // Add mouseleave event to hide the hover info box
+    projectCard.addEventListener('mouseleave', () => {
+        hoverInfo.style.display = 'none';  // Hide the hover info box
+    });
+
+    projectList.appendChild(projectCard);
+</script>
 @include('layouts.footer')

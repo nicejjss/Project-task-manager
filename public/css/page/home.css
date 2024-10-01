@@ -1,118 +1,138 @@
 .content {
-    margin: 0;
-    padding-top: 0;
-    background-color: white;
-    /* height: 100vh; */
-    position: absolute;
-    top: 20%;
-    left: 50%;
-    transform: translate(-50%, 0);
+    margin: 0 auto;
+    padding-top: 50px;
 }
-
-.content {
-    all: unset;
-}
-
-/* Scoped styles inside the project-page container */
-.project-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-    background-color: var(--content-color-background);
-}
-
-.project-page .container {
-    width: 60%;
-    background: #fff;
+.container {
+    max-width: 1200px;
+    margin: 45px auto;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.project-page .row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+h2 {
+    color: #4caf93;
+    text-align: center;
     margin-bottom: 20px;
 }
 
-.project-page .row h1,
-.tasks h1{
-    font-size: 24px;
-    color: #4caf93; /* Primary color */
+.search-btn{
+    margin-top: 20px;
 }
 
-.project-page .create-project-link {
-    text-decoration: none;
-    color: #4caf93; /* Primary color for link */
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.project-page .create-project-link:hover {
-    color: #388f70; /* Darker hover effect */
-    text-decoration: underline;
-}
-
-.project-page .projects,
-.project-page .tasks {
-    margin-bottom: 30px;
-}
-
-.project-page ul {
-    list-style-type: none;
-}
-
-/* List item styling for both Projects and Tasks */
-.project-page ul li {
-    padding: 10px;
-    background-color: #edf4f0; /* Secondary color for list items */
-    margin-bottom: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
+form {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
-    cursor: pointer; /* Makes the item look clickable */
+    gap: 20px;
 }
 
-/* Project/Task details aligned on the left */
-.project-page ul li .details {
+label {
+    font-weight: bold;
+}
+
+input, select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    min-width: 150px;
+}
+
+.form-group {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
 }
 
-/* Right-aligned small info section for tasks and members */
-.project-page ul li .info {
-    font-size: 14px;
-    color: #555;
-    text-align: right;
+.form-group input, .form-group select {
+    margin-top: 5px;
 }
 
-/* Hover effect - change background to primary color */
-.project-page ul li:hover {
-    background-color: #4caf93; /* Primary color on hover */
-    color: white; /* Change text color for better contrast */
-}
-
-.project-page ul li a {
-    text-decoration: none;
-    color: inherit;
-    width: 100%;
+.actions {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
 }
 
-.project-page .tasks h2,
-.project-page .projects h2 {
-    font-size: 20px;
-    color: #4caf93; /* Primary color */
+button {
+    padding: 10px 20px;
+    background-color: #4caf93;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
 }
 
-.project-page ul li .task-project {
+button:hover {
+    background-color: #45a67a;
+}
+
+/* Project list styles */
+.project-list {
+    margin-top: 30px;
+}
+
+.project-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    position: relative;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.project-card h3 {
+    margin: 0;
+    color: #4caf93;
+}
+
+.project-card .status {
     font-weight: bold;
-    margin-bottom: 5px;
+}
+
+.project-card .status.open {
+    color: green;
+}
+
+.project-card .status.progressing {
+    color: orange;
+}
+
+.project-card .status.closed {
+    color: red;
+}
+
+.project-card p {
+    margin: 5px 0;
+}
+
+/* Tooltip styles */
+.hover-info {
+    display: none;
+    position: fixed; /* Fixed position relative to viewport */
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    z-index: 10;
+    pointer-events: none; /* Make sure it doesn't block mouse events */
+}
+
+/* Button style in project list */
+.view-btn {
+    background-color: #4caf93;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.view-btn:hover {
+    background-color: #45a67a;
 }

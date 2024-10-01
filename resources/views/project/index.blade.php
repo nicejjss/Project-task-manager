@@ -113,7 +113,7 @@
         var inProgressCount = {{$tasks['inProgressCount']}};
         var doneCount = {{$tasks['doneCount']}};
 
-        var allZero = openCount === 0 && inProgressCount === 0 && acceptedCount === 0 && doneCount === 0;
+        var allZero = openCount === 0 && inProgressCount === 0 && doneCount === 0;
 
         var datasets = allZero ? [{
             label: 'Không có công việc',

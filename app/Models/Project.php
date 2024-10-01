@@ -34,9 +34,9 @@ class Project extends Model
         return $this->hasMany(Task::class, 'project_id');
     }
 
-    public function labels()
+    public function taskTypes()
     {
-        return $this->hasMany(Label::class, 'project_id');
+        return $this->hasMany(TaskType::class, 'project_id');
     }
 
     public function members()

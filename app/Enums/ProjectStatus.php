@@ -7,8 +7,8 @@ use BenSampo\Enum\Enum;
 final class ProjectStatus extends Enum
 {
     const MESSAGE = [
-        'Mở',
-        'Đang Thực Hiện',
+        'Chuẩn Bị',
+        'Đang Phát Triển',
         'Đã Đóng',
     ];
 

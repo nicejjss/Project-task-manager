@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\WEB;
 
+use App\Http\Requests\HomeRequest;
 use App\Models\User;
 use App\Services\HomeServices;
 
@@ -13,13 +14,9 @@ class HomeController extends BaseController
         $this->services = $services;
     }
 
-    public function index()
+    public function index(HomeRequest $request)
     {
-        $info = $this->services->getInfor();
-        /** @var User $user */
-       $projects = data_get($info, 'projects');
-       $tasks = data_get($info, 'tasks');
-        return view('home')->with(['projects' => $projects, 'tasks' => $tasks]);
+        return view('home')->with(['projects' => $this->services->getInfor($request->validated())]);
     }
 
 

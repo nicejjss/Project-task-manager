@@ -34,9 +34,9 @@ class Task extends Model
         return $this->belongsTo(Project::class, 'project_id');
     }
 
-    public function label()
+    public function taskType()
     {
-        return $this->belongsTo(Label::class, 'label_id');
+        return $this->belongsTo(TaskType::class, 'label_id');
     }
 
     public function creator()

@@ -238,6 +238,7 @@ class ProjectServices
     {
         if ($this->projectRepository->update($projectId, [
            'status' => ProjectStatus::Closed,
+           'closed_at' => now(),
         ])) {
             return true;
         };
