@@ -19,7 +19,7 @@ class SignUpRequest extends BaseRequest
     {
         return [
             'email' => 'required|email:rfc',
-            'password' => 'required|min:6',
+            'password' => 'required|min:6|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/',
             'confirm_pass' => 'required|min:6',
         ];
     }
@@ -30,6 +30,7 @@ class SignUpRequest extends BaseRequest
             'email.required' => 'Email không được để trống',
             'email.email' => 'Email sai format',
             'password.required' => 'Mật khẩu không được để trống',
+            'password.regex' => 'Mật khẩu phải chứa ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một ký tự đặc biệt.',
             'confirm_pass.required' => 'Xác nhận mật khẩu không được để trống',
             'password.min' => 'Mật khẩu dài ít nhất 6 ký tự',
             'confirm_pass.min' => 'Xác nhận mật khẩu dài ít nhất 6 ký tự',

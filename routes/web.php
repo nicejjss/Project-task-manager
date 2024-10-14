@@ -51,6 +51,12 @@ Route::middleware(['authentication:web'])->group(function () {
            Route::get('/close', [ProjectController::class, 'close']);
 
            Route::get('/task/create', [TaskController::class, 'taskCreateView']);
+           Route::post('/task/create', [TaskController::class, 'taskCreate']);
+           Route::get('/task/list', [TaskController::class, 'taskListView'])->name('tasks.list');
+
+           Route::prefix('task/{taskID}')->group(function () {
+              Route::get('/', [TaskController::class, 'index'])->middleware(\App\Http\Middleware\TaskPermission::class);
+           });
        });
    });
 

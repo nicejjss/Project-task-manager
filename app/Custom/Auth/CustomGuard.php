@@ -68,7 +68,6 @@ public function __construct(UserProvider $provider)
 
     public function validate(array $credentials = [])
     {
-        // TODO: Implement validate() method.
     }
 
     public function attemptByCredentials(array $credentials): \Illuminate\Contracts\Auth\Authenticatable|bool

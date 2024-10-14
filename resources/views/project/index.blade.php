@@ -72,6 +72,43 @@
             <div>
                 <canvas id="myChart"></canvas>
             </div>
+            <div id="taskTypeSection">
+                <!-- Task Type Button -->
+                <button type="button" id="taskTypeBtn" class="task-type-btn">Quản Lý Nhóm Công Việc</button>
+            </div>
+
+            <!-- TODO: adding TaskType but not finish -->
+            <!-- Task Type Modal -->
+            <div id="taskTypeModal" class="modal-task-type">
+                <div class="modal-content-task-type">
+                    <span class="close-task-type-modal">&times;</span>
+                    <h2>Nhóm Công Việc</h2>
+                    <!-- Task Type List -->
+                    <div id="taskTypeListContainer">
+                        <!-- Add the CSRF token in a meta tag for security -->
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
+                        <ul id="taskTypeList">
+                            @foreach($taskTypes as $taskType)
+                                <li class="task-type-item" id="task-{{$taskType['tasktype_id']}}">
+                                    <span class="task-name">{{$taskType['tasktype_name']}}</span>
+                                    <div>
+                                        <button onclick="editTaskType({{$taskType['tasktype_id']}})">Sửa</button>
+                                        <button onclick="deleteTaskType({{$taskType['tasktype_id']}})">Xóa</button>
+                                    </div>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+
+                    <!-- Task Type Form -->
+                    <form id="taskTypeForm" action="" method="post">
+                        @csrf()
+                        <input type="text" id="taskTypeInput" name="task_type" placeholder="Nhập Loại Công Việc" required />
+                        <button type="submit" class="btn-primary">Thêm</button>
+                    </form>
+                </div>
+            </div>
+
             <div>
                 @if($ownerId === auth()->user()->id && !$isClose)
                     <div id="invite-text">Mời Thành Viên</div>
@@ -86,7 +123,7 @@
                 <div id="notification-mail" class="notification-mail"></div>
 
                 <!-- Toggle List -->
-                    <button class="member-dropdown-btn" onclick="toggleMemberList()">Members ▼</button>
+                    <button class="member-dropdown-btn" onclick="toggleMemberList()">Thành Viên ▼</button>
 
                     <div id="member-email-dropdown" class="member-dropdown-content" style="display: none;">
                         <input type="text" placeholder="Search members..." id="memberSearchInput" onkeyup="filterMemberEmails()" aria-label="Search members">
@@ -112,8 +149,9 @@
         var openCount = {{$tasks['openCount']}};
         var inProgressCount = {{$tasks['inProgressCount']}};
         var doneCount = {{$tasks['doneCount']}};
+        var closedCount = {{$tasks['closedCount']}};
 
-        var allZero = openCount === 0 && inProgressCount === 0 && doneCount === 0;
+        var allZero = openCount === 0 && inProgressCount === 0 && doneCount === 0 && closedCount === 0;
 
         var datasets = allZero ? [{
             label: 'Không có công việc',
@@ -137,6 +175,12 @@
                 label: 'Hoàn thành',
                 data: [doneCount],
                 backgroundColor: '#a1af2f',
+                barThickness: 15,
+            },
+            {
+                label: 'Đã Đóng',
+                data: [doneCount],
+                backgroundColor: '#af2f2f',
                 barThickness: 15,
             }
         ];
@@ -200,12 +244,17 @@
 <div id="myModal" class="modal">
     <div class="modal-content">
         <p>Bạn có chắc chắn muốn đóng dự án này không?</p>
-        <p>Hành động này không thể hoàn tác.</p>
+        <p>Hành động này <b>không thể</b> hoàn tác.</p>
         <div class="modal-buttons">
-            <button id="confirmClose" class="btn-confirm">Yes</button>
-            <button id="cancelClose" class="btn-cancel">No</button>
+            <button id="confirmClose" class="btn-confirm">Có</button>
+            <button id="cancelClose" class="btn-cancel">Không</button>
         </div>
     </div>
+</div>
+
+<!-- Loading Overlay and Indicator -->
+<div id="loadingOverlay">
+    <div class="lds-dual-ring"></div>
 </div>
 
 <!-- CSS -->
@@ -322,6 +371,9 @@
     document.getElementById('inviteForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent the default form submission
 
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        loadingOverlay.style.display = 'block';
+
         var xhr = new XMLHttpRequest();
         var url = this.action;
         var formData = new FormData(this);
@@ -333,12 +385,15 @@
         xhr.onload = function() {
             if (xhr.status === 200) {
                 if (xhr.responseText !== 'Gửi mail thất bại') {
+                    loadingOverlay.style.display = 'none';
                     showToast(1, xhr.responseText);
                     document.getElementById('inviteForm').reset(); // Clear the form
                 } else {
+                    loadingOverlay.style.display = 'none';
                     showToast(2, xhr.responseText);
                 }
             } else {
+                loadingOverlay.style.display = 'none';
                 showToast(0, xhr.responseText);
             }
         };
@@ -349,6 +404,129 @@
 
         xhr.send(formData);
     });
+
+    var taskTypeModal = document.getElementById("taskTypeModal");
+
+    var taskTypeBtn = document.getElementById("taskTypeBtn");
+    var closeModalBtn = document.querySelector(".close-task-type-modal");
+    var taskTypeForm = document.getElementById("taskTypeForm");
+    var taskTypeInput = document.getElementById("taskTypeInput");
+    var taskTypeList = document.getElementById("taskTypeList");
+
+    var taskTypes = [];
+
+
+    taskTypeForm.addEventListener('submit', function(event) {
+        // Show the loading overlay and indicator
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        loadingOverlay.style.display = 'block';
+    });
+
+    // Open Modal
+    taskTypeBtn.onclick = function () {
+        taskTypeModal.style.display = "block";
+    }
+
+    // Close Modal
+    closeModalBtn.onclick = function () {
+        taskTypeModal.style.display = "none";
+    }
+
+    // Close Modal if clicked outside
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            taskTypeModal.style.display = "none";
+        }
+    }
+
+    // Render Task Types List
+    function renderTaskTypes() {
+        taskTypes.forEach(function (type, index) {
+            var li = document.createElement('li');
+            li.innerHTML = `
+                ${type}
+                <button onclick="deleteTaskType(${index})">Delete</button>
+            `;
+            taskTypeList.appendChild(li);
+        });
+    }
+
+    // Function to toggle editing of a task type
+    function editTaskType(id) {
+        const taskItem = document.getElementById(`task-${id}`);
+        const taskNameSpan = taskItem.querySelector('.task-name');
+        const editButton = taskItem.querySelector('button[onclick^="editTaskType"]');
+
+        if (editButton.textContent === "Sửa") {
+            const taskName = taskNameSpan.textContent;
+            taskNameSpan.innerHTML = `<input class="taskTypeInput" type="text" id="editTaskName-${id}" value="${taskName}">`;
+            editButton.textContent = "Lưu";
+
+            // Add event listener to detect click outside input field
+            document.addEventListener('click', handleClickOutside);
+
+        } else {
+            saveTaskType(id);
+        }
+
+        // Function to handle click outside the task input
+        function handleClickOutside(event) {
+            const taskInput = document.getElementById(`editTaskName-${id}`);
+            if (taskInput && !taskInput.contains(event.target) && event.target !== taskInput) {
+                saveTaskType(id); // Save the task and revert the input back to a span
+                document.removeEventListener('click', handleClickOutside); // Remove the event listener
+            }
+        }
+    }
+
+    // Function to save task type
+    function saveTaskType(id) {
+        const taskItem = document.getElementById(`task-${id}`);
+        const taskNameSpan = taskItem.querySelector('.task-name');
+        const editButton = taskItem.querySelector('button[onclick^="editTaskType"]');
+        const newTaskName = document.getElementById(`editTaskName-${id}`).value;
+
+        // Send AJAX request to update task name
+        fetch(`/tasks/${id}/edit`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ name: newTaskName })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    taskNameSpan.textContent = newTaskName;
+                    editButton.textContent = "Edit";
+                } else {
+                    alert('Error updating task');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    // Function to delete a task type
+    function deleteTaskType(id) {
+        // Send AJAX request to delete task
+        fetch(`/tasks/${id}/delete`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(`task-${id}`).remove();
+                } else {
+                    alert('Error deleting task');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
 
 </script>
 <script src="/js/page/projectindex.js"></script>

@@ -32,3 +32,18 @@ window.onclick = function(event) {
     }
 }
 
+const sidebar = document.getElementById('sidebar');
+// Sidebar Toggle Logic for Mobile
+const menuToggle = document.getElementById('hamburger-icon');
+const hamburgerIcon = document.getElementById('hamburger');
+const closeIcon = document.getElementById('close');
+menuToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open-side');
+    if (sidebar.classList.contains('open-side')) {
+        hamburgerIcon.style = "display: none";
+        closeIcon.style = "display: block";
+    } else {
+        hamburgerIcon.style = "display: block";
+        closeIcon.style = "display: none";
+    }
+});

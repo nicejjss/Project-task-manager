@@ -35,12 +35,10 @@ class CustomProvider implements UserProvider
 
     public function retrieveByToken($identifier, $token)
     {
-        // TODO: Implement retrieveByToken() method.
     }
 
     public function updateRememberToken(Authenticatable $user, $token)
     {
-        // TODO: Implement updateRememberToken() method.
     }
 
     public function retrieveByCredentials(array $credentials)
@@ -50,11 +48,9 @@ class CustomProvider implements UserProvider
 
     public function validateCredentials(Authenticatable $user, array $credentials)
     {
-        // TODO: Implement validateCredentials() method.
     }
 
     public function rehashPasswordIfRequired(Authenticatable $user, #[\SensitiveParameter] array $credentials, bool $force = false)
     {
-        // TODO: Implement rehashPasswordIfRequired() method.
     }
 }

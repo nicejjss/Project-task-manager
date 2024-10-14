@@ -8,15 +8,16 @@ class TaskType extends Model
 {
     protected $table = 'tasktypes';
 
-    protected $primaryKey = 'label_id';
+    protected $primaryKey = 'tasktype_id';
 
     protected $fillable = [
         'project_id',
-        'label_name',
-        'color_code',
+        'tasktype_name',
+        'created_at',
+        'updated_at',
     ];
 
-    public $timestamps = false;
+    public $timestamps = true;
 
     public function project()
     {
@@ -25,6 +26,6 @@ class TaskType extends Model
 
     public function tasks()
     {
-        return $this->hasMany(Task::class, 'label_id');
+        return $this->hasMany(Task::class, 'tasktype_id');
     }
 }

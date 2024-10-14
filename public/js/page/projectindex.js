@@ -1,4 +1,4 @@
-document.getElementById('toggleButton').addEventListener('click', function() {
+document.getElementById('toggleButton').addEventListener('click', function () {
     var emailList = document.getElementById('emailList');
     if (emailList.style.display === 'none') {
         emailList.style.display = 'block';
@@ -9,7 +9,7 @@ document.getElementById('toggleButton').addEventListener('click', function() {
     }
 });
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     var flashMessage = document.getElementById("flash-message");
     if (flashMessage) {
         flashMessage.style.position = "fixed";
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
         flashMessage.style.zIndex = "9999";
         flashMessage.style.display = "block";
 
-        setTimeout(function() {
+        setTimeout(function () {
             flashMessage.classList.remove("show-flash-message");
             flashMessage.classList.add("hide-flash-message");
         }, 1500); // 1.5 seconds
@@ -35,7 +35,7 @@ function showNotification(message, type) {
     notification.style.display = 'block';
 
     // Hide the notification after 3 seconds
-    setTimeout(function() {
+    setTimeout(function () {
         notification.style.display = 'none';
     }, 3000);
 }
@@ -64,7 +64,7 @@ function filterMemberEmails() {
 }
 
 // Optional: Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (
         !event.target.matches('.member-dropdown-btn') &&
         !event.target.matches('#member-email-dropdown') &&

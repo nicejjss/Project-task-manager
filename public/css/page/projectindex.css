@@ -239,7 +239,7 @@ input[type="submit"] {
 
 /* Dropdown content container */
 .member-dropdown-content {
-    position: relative;
+    position: absolute;
     background-color: white;
     border: 1px solid #ddd;
     max-width: 300px;
@@ -322,7 +322,7 @@ input[type="submit"] {
 
 /* Open status */
 .open {
-    background-color: #4caf59;
+    background-color: #5aaf4c;
     color: white;
 }
 
@@ -336,4 +336,109 @@ input[type="submit"] {
 .closed {
     background-color: #F44336;
     color: white;
+}
+
+/* Task Type Button */
+.task-type-btn {
+    margin-top: 20px;
+    background-color: #4caf93;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.task-type-btn:hover {
+    background-color: #449f84;
+}
+
+/* Modal Styles */
+.modal-task-type {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content-task-type {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    border-radius: 10px;
+}
+
+.close-task-type-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-task-type-modal:hover,
+.close-task-type-modal:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#taskTypeList {
+    padding: 0;
+}
+
+#taskTypeList li {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+#taskTypeList li button {
+    background-color: #bd4c44;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#taskTypeList li button:hover {
+    background-color: #a94444;
+}
+
+/* Primary Button (Add/Edit Task) */
+.btn-primary {
+    background-color: #4caf93;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#taskTypeForm {
+    flex-wrap: wrap;
+}
+
+#taskTypeInput {
+    outline: none;
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.taskTypeInput {
+    padding: 10px;
+    outline: none;
 }

@@ -7,14 +7,17 @@ use BenSampo\Enum\Enum;
 final class NotificationType extends Enum
 {
     const MESSAGE = [
-        'Mời',
-        'Có Comment',
-        'Cập Nhật',
+        'Được Mời Vào Project',
+        'Được Giao Task',
+        'Có Comment Mới',
+        'Cập Nhật Mới',
     ];
 
     const Invite = 0;
-    const Comment = 1;
-    const ChangeContent = 2;
+
+    const Assign = 1;
+    const Comment = 2;
+    const ChangeContent = 3;
 
     public static function MESSAGE($status): string
     {

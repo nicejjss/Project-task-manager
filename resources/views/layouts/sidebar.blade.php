@@ -16,7 +16,7 @@
 </nav>
 
 <div id="project-name-select" class="project-dropdown">
-    <button class="dropbtn" onclick="toggleDropdown()">
+    <button style="font-weight: 600;" class="dropbtn" onclick="toggleDropdown()">
         Dự Án: {{$currentProject['project_name']}} ▼
     </button>
     <div id="dropdown-content" class="project-dropdown-content" role="menu">
@@ -25,7 +25,7 @@
             <span id="span-title">Dự án của tôi:</span>
             <!-- Example projects, replace with your actual project names -->
             @foreach($otherProjects as $otherProject)
-                <a href="/project/{{$otherProject['project_id']}}" role="menuitem">{{$otherProject['project_name']}}</a>
+                <a style="text-decoration: none;color: black" href="/project/{{$otherProject['project_id']}}" role="menuitem">{{$otherProject['project_name']}}</a>
             @endforeach
         </div>
     </div>

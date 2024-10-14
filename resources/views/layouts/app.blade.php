@@ -15,7 +15,7 @@
         <div class="logo">
             <a style="color: #111" href="/"><img style="width: 150px;" src="{{asset('logo.png')}}"></a>
         </div>
-        <a style="text-decoration: none;" href="/" class="projects-link">Dự Án</a>
+        <a style="text-decoration: none;" href="/" class="projects-link">DS Dự Án</a>
     </div>
     <div class="nav-right">
         <div class="dropdown">
@@ -93,7 +93,7 @@
         cluster: 'ap1'
     });
 
-    var channel = pusher.subscribe('channels.user_{{$user['email']}}');
+    var channel = pusher.subscribe('channels.user_{{$user['id']}}');
     channel.bind('invitation', function(data) {
         console.log(data);
         alert(JSON.stringify(data));

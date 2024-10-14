@@ -91,9 +91,11 @@ document.getElementById('projectForm').addEventListener('submit', function(event
     })
         .then(response => response.json())
         .then(data => {
+            showToast(1, 'Cập nhật thành công');
             window.location.href = "http://127.0.0.1:8000/project/" + data;
         })
         .catch((error) => {
+            showToast(2, 'Cập nhật thất bại');
             console.error('Error:', error);
         })
         .finally(() => {

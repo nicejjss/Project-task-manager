@@ -12,6 +12,7 @@ class FileAttachment extends Model
 
     protected $fillable = [
         'task_id',
+        'project_id',
         'file_path',
         'uploaded_by',
         'uploaded_at',

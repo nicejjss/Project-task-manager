@@ -79,6 +79,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'currentProject' => $currentProject,
                 'otherProjects' => $membersProject->toArray(),
+                'projectId' => $currentProjectID,
             ]);
         });
     }

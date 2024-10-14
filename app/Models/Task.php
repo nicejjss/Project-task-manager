@@ -11,6 +11,7 @@ class Task extends Model
     protected $primaryKey = 'task_id';
 
     protected $fillable = [
+        'task_id',
         'project_id',
         'label_id',
         'created_by',
@@ -36,7 +37,7 @@ class Task extends Model
 
     public function taskType()
     {
-        return $this->belongsTo(TaskType::class, 'label_id');
+        return $this->belongsTo(TaskType::class, 'tasktype_id');
     }
 
     public function creator()

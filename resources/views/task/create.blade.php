@@ -1,28 +1,38 @@
 @include('layouts.app')
 @include('layouts.sidebar')
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/page/taskcreate.css">
-<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
 <main class="content">
     <div class="container">
-        <h1 id="create-text">Create Task</h1>
+        <h1 id="create-text">Công Việc Mới</h1>
+        @if ($errors->any())
+            <div class="error" style="margin: 20px 0;">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form id="taskForm" enctype="multipart/form-data">
             @csrf
             <div class="form-row">
                 <!-- Left Column (70%) -->
                 <div class="column-left">
                     <div class="form-group">
-                        <label for="title">Title:</label>
+                        <label for="title">Tên Công Việc:<span style="color: red">*</span></label>
                         <input type="text" id="title" name="title" required>
                     </div>
                     <div class="form-group">
-                        <label for="description">Description:</label>
-                        <div id="editor" style="min-height: 200px; height: auto;"></div> <!-- Quill Editor -->
+                        <label for="description">Mô Tả:</label>
+                        <div id="editor" style="min-height: 200px;height: 450px;"></div>
                     </div>
                 </div>
                 <!-- Right Column (30%) -->
                 <div class="column-right">
                     <div class="form-group">
-                        <label for="priority">Priority:</label>
+                        <label for="priority">Độ Ưu Tiên:<span style="color: red">*</span></label>
                         <select id="priority" name="priority" class="priority-select">
                             <option value=""></option>
                             @foreach($taskPriority as $key => $value)
@@ -31,8 +41,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="user">Assign To:</label>
-                        <select id="user" name="user">
+                        <label for="user">Người Thực Hiện:<span style="color: red">*</span></label>
+                        <select id="user" name="assignee">
                             <option value=""></option>
                             @foreach($members as $member)
                                 <option value="{{$member['id']}}">{{$member['name']}}</option>
@@ -40,7 +50,20 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="deadline">Deadline:</label>
+                        <label for="deadline">Loại Công Việc:</label>
+                        <select id="tasktype" name="tasktype">
+                            <option value="0">Không Xác Định</option>
+                            @if(count($taskTypes))
+                                @foreach($taskTypes as $taskType)
+                                    <option value="{{$taskType['tasktype_id']}}">{{$taskType['tasktype_name']}}</option>
+                                @endforeach
+                            @else
+                                <option value="">Không có loại công việc nào</option>
+                            @endif
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="deadline">Thời Hạn:</label>
                         <input type="date" id="deadline" name="deadline">
                     </div>
                 </div>
@@ -48,20 +71,27 @@
 
             <!-- File Attachment -->
             <div class="form-group">
-                <label for="attachment">Attach Files:</label>
-                <input type="file" id="attachment" name="attachment" multiple onchange="previewFiles()">
-                <ul id="fileList"></ul>
+                <label for="fileInput">Files Đính Kèm:</label>
+                <input type="file" id="fileInput" style="display: none;" multiple>
+                <button type="button" id="addFilesBtn">Thêm Tệp</button>
             </div>
+
+            <!-- File List -->
+            <ul id="fileList"></ul>
 
             <button id="submit-btn" type="submit">Create Task</button>
         </form>
-        <div id="output"></div>
     </div>
 </main>
+<!-- Loading Overlay and Indicator -->
 <div id="loadingOverlay">
-    <div id="loadingIndicator">Loading, please wait...</div>
+    <div class="lds-dual-ring"></div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.1/showdown.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
+<script>
+    var projectId = {{$projectId}}; // Pass the $projectId variable to your JavaScript file
+</script>
 <script src="/js/page/taskcreate.js"> </script>
 @include('layouts.footer')

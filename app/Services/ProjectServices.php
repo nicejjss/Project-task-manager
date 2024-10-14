@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Enums\NotificationType;
 use App\Enums\ProjectStatus;
 use App\Enums\TaskStatus;
-use App\Jobs\ProjectInviteJob;
+use App\Jobs\NotificationJob;
 use App\Repositories\ProjectMemberRepository;
 use App\Repositories\ProjectRepository;
+use App\Repositories\TaskTypeRepository;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -54,7 +56,7 @@ class ProjectServices
             $invitedPeople = array_diff($invitedPeople, $ownerEmail);
 
             if (count($invitedPeople)) {
-                ProjectInviteJob::dispatch($invitedPeople, $project->project_id, $project->project_name);
+                NotificationJob::dispatch($invitedPeople, $project->project_id, $project->project_name, NotificationType::Invite);
             }
 
             return $project->project_id;
@@ -108,6 +110,7 @@ class ProjectServices
         $openCount = $tasks->where(['status', '=', TaskStatus::Open])->count();
         $inProgressCount = $tasks->where(['status', '=', TaskStatus::Progressing])->count();
         $doneCount = $tasks->where(['status', '=', TaskStatus::Done])->count();
+        $closedCount = $tasks->where(['status', '=', TaskStatus::Closed])->count();
 
         $projectDescription = Storage::disk('gcs')->get($project->description);
 
@@ -149,9 +152,11 @@ class ProjectServices
                 'openCount' => $openCount,
                 'inProgressCount' => $inProgressCount,
                 'doneCount' => $doneCount,
+                'closedCount' => $closedCount,
             ],
             'members' => $members,
             'ownerId' => $owner->id,
+            'taskTypes' => $project->taskTypes()->where('is_delete', '=', 0)->get()->toArray(),
         ];
     }
 
@@ -162,10 +167,10 @@ class ProjectServices
             $user = $this->userRepository->getUser(['email' => $email]);
 
             if (!$user) {
-                ProjectInviteJob::dispatch([$email], $projectId, $project->project_name);
+                NotificationJob::dispatch([$email], $projectId, $project->project_name);
                 return 1;
             } elseif (!$project->members()->where([['user_id', '=', $user->id]])->count() && $project->owner->id !== $user->id) {
-                ProjectInviteJob::dispatch([$email], $projectId, $project->project_name);
+                NotificationJob::dispatch([$email], $projectId, $project->project_name);
                 return 2;
             }
 
@@ -203,7 +208,7 @@ class ProjectServices
                 Storage::disk('gcs')->delete($project->description);
                 $fileName = 'project_' . $project->project_id . '_' . Str::random(10);
                 $ext = $file->getClientOriginalExtension();
-                $path = $fileName . '.' . $ext;
+                $path = 'project/' . $fileName . '.' . $ext;
                 Storage::disk('gcs')->put($path, file_get_contents($file), 'public');
             }
             $invitedPeople = json_decode(data_get($data, 'people'));
@@ -215,7 +220,7 @@ class ProjectServices
             $removeIDs = Arr::flatten($this->userRepository->whereIn('email', $removeEmails)->get(['id'])->toArray());
 
             if (count($addEmails)) {
-                ProjectInviteJob::dispatch($addEmails, $project->project_id, $project->project_name);
+                NotificationJob::dispatch($addEmails, $project->project_id, $project->project_name);
             }
 
             if (count($removeIDs)) {

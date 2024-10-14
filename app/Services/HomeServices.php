@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Enums\ProjectStatus;
 use App\Enums\TaskStatus;
+use App\Models\Project;
 use App\Models\User;
 use App\Repositories\ProjectMemberRepository;
 use App\Repositories\ProjectRepository;
@@ -27,12 +28,13 @@ class HomeServices
 
     public function getInfor(array $validated) {
         $projectName = data_get($validated, 'project_name');
-        $projectStatus = data_get($validated, 'project_status');
-        $userName = data_get($validated, 'user_name');
-        $sort = data_get($validated, 'sort', 0);
+        $projectStatus = (int)data_get($validated, 'project_status', -1);
+        $userMail = data_get($validated, 'user_mail');
+        $sort = (int)data_get($validated, 'sort', 0);
+        $role = (int)data_get($validated, 'role', 0);
+
         /** @var User $user */
         $user = $this->userRepository->getAuthUser();
-
         $ownProjects = $user->projects()->pluck('project_id')->toArray();
         $membersProject  = $this->projectMemberRepository->where([['user_id', '=', $user->id]])->pluck('project_id')->unique()->toArray();
         $projectIDs = array_merge($ownProjects, $membersProject);
@@ -41,14 +43,25 @@ class HomeServices
             ->when($projectName, function ($query, $projectName) {
                 return $query->where('project_name', 'like', "%$projectName%");
             })
-            ->when(!is_null($projectStatus), function ($query, $projectStatus) {
+            ->when($projectStatus > -1, function ($query) use ($projectStatus) {
                 return $query->where('status', $projectStatus);
             })
-            ->when($userName, function ($query, $userName) {
-                $userIds = User::where('name', 'like', "%$userName%")->pluck('id')->toArray();
-                return $query->whereIn('user_id', $userIds);
+            ->when($userMail, function ($query) use ($userMail, $projectIDs) {
+                $ownerProjectIds = Project::join('users', 'users.id', '=', 'projects.owner_id')
+                    ->where('email', '=', $userMail)->whereIn('project_id', $projectIDs)->pluck('projects.project_id')->toArray();
+                $projectUserMailIds = Project::join('projectmembers', 'projectmembers.project_id', '=', 'projects.project_id')
+                    ->join('users', 'users.id', '=', 'projectmembers.user_id')
+                    ->where('email', '=', $userMail)->whereIn('projects.project_id', $projectIDs)->pluck('projects.project_id')->toArray();
+                $projectIds = array_merge($ownerProjectIds, $projectUserMailIds);
+                return $query->whereIn('project_id', $projectIds);
             })
-            ->when($sort <= 4, function($query, $sort) {
+            ->when($role, function ($query) use ($role, $ownProjects, $membersProject) {
+                return match ($role) {
+                    1 => $query->whereIn('project_id', $ownProjects),
+                    2 => $query->whereIn('project_id', $membersProject),
+                };
+            })
+            ->when($sort <= 4, function($query) use ($sort) {
                 return match ($sort) {
                     2 => $query->orderBy('project_name', 'desc'),
                     3 => $query->orderBy('created_at', 'asc'),
@@ -63,14 +76,15 @@ class HomeServices
             $project['tasksCount'] = $project->tasks()->count();
             $project['taskOpenCount'] = $project->tasks()->where('status', '=',TaskStatus::Open)->count();
             $project['taskProcessingCount'] = $project->tasks()->where('status', '=',TaskStatus::Progressing)->count();
-            $project['taskWaitedTimeCount'] = $project->tasks()->where('status', '=',TaskStatus::WaitedTime)->count();
             $project['taskDoneCount'] = $project->tasks()->where('status', '=',TaskStatus::Done)->count();
             $project['statusText'] = ProjectStatus::MESSAGE($project->status);
-            $project['created_at'] = Carbon::parse($project->created_at)->startOfDay();
+            $project['statusColor'] = ProjectStatus::getKey($project->status);
+            $project['created_at'] = Carbon::parse($project->created_at)->toDateString();
+            $project['role'] = in_array($project->project_id, $ownProjects)?'Quản Lý':'Thành Viên';
         }
 
-        $projects->when($sort > 4, function (Collection $collection, int $value) {
-            return match ($value) {
+        $projects->when($sort > 4, function (Collection $collection) use ($sort) {
+            return match ($sort) {
                 6 => $collection->sortByDesc('membersCount'),
                 7 => $collection->sortBy('tasksCount'),
                 8 => $collection->sortByDesc('tasksCount'),

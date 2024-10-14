@@ -28,7 +28,7 @@ class ActiveRequest extends BaseRequest
     public function messages(): array
     {
         return [
-            'active_token.required' => 'The mail field is required.',
+            'active_token.required' => 'Cần nhập thông tin Email',
         ];
     }
 

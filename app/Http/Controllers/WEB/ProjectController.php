@@ -26,6 +26,7 @@ class ProjectController extends BaseController
             'tasks' => $data['tasks'],
             'members' =>$data['members'],
             'ownerId' => $data['ownerId'],
+            'taskTypes' => $data['taskTypes'],
         ]);
     }
 

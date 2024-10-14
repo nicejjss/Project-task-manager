@@ -2,30 +2,20 @@
 
 namespace App\Http\Requests\Project;
 
+use App\Custom\Traits\PermissionTrait;
 use App\Http\Requests\BaseRequest;
 use App\Models\Project;
 use App\Models\ProjectMember;
 
 class IndexRequest extends BaseRequest
 {
+    use PermissionTrait;
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        $projectID = (int)$this->route('projectID');
-        $userID = auth()->user()->id;
-
-        $isOwner = Project::where([
-            ['owner_id', '=', $userID],
-            ['project_id', '=', $projectID],
-        ])->exists();
-        $isMember = ProjectMember::where([
-            ['project_id', '=', $projectID],
-            ['user_id', '=', $userID],
-        ])->exists();
-
-        return $isOwner || $isMember;
+        return $this->hasCreateTaskPermission(request('projectID'));
     }
 
     /**

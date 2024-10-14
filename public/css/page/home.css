@@ -1,10 +1,15 @@
+body {
+    height: 100vh;
+}
+
 .content {
-    margin: 0 auto;
-    padding-top: 50px;
+    margin-top: 80px;
+    margin-left: 0;
+    background-color: var(--content-color-background);
 }
 .container {
     max-width: 1200px;
-    margin: 45px auto;
+    margin: 45px auto 0;
     padding: 20px;
     background-color: white;
     border-radius: 8px;
@@ -12,9 +17,9 @@
 }
 
 h2 {
-    color: #4caf93;
     text-align: center;
     margin-bottom: 20px;
+    margin-top: 15px;
 }
 
 .search-btn{
@@ -23,6 +28,7 @@ h2 {
 
 form {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 20px;
@@ -37,7 +43,7 @@ input, select {
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 1rem;
-    min-width: 150px;
+    outline: none;
 }
 
 .form-group {
@@ -135,4 +141,123 @@ button:hover {
 
 .view-btn:hover {
     background-color: #45a67a;
+}
+
+.flex {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.search {
+    justify-content: space-between;
+}
+
+.sort .form-group {
+    margin: 0 10px;
+}
+
+.project-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 10px;
+}
+
+.project-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+.hover-box {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1;
+    pointer-events: none; /* Prevents the hover box from interfering with mouse events */
+}
+
+.project-wrapper:hover .hover-box {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.projects-container {
+    display: flex;
+    flex-direction: column;
+}
+
+#create-project-link {
+    text-align: right;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: larger;
+}
+
+#create-project-link a{
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+#create-project-link a:hover{
+    text-decoration: underline;
+}
+
+.search .form-group {
+    flex: 1;
+    margin: 0 10px;
+}
+
+.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.error ul li {
+    list-style: none;
+}
+
+.hover-box {
+    position: absolute;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    display: none; /* Hide by default */
+}
+.project-wrapper {
+    position: relative;
+}
+
+.Open {
+    color: #5aaf4c
+}
+
+.Processing {
+    color: #369ff4;
+}
+
+.Closed {
+    color: #F44336;
+}
+
+.color-open {
+    color: #ed8077;
+}
+
+.color-process {
+    color: #4488c5;
+}
+
+.color-done {
+    color: #a1af2f;
 }

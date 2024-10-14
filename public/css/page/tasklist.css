@@ -1,0 +1,416 @@
+body {
+    background-color: var(--content-color-background);
+}
+
+.container {
+    margin-left: 200px;
+    padding: 0 20px;
+}
+
+#task_list {
+    background-color: var(--content-color-background);
+}
+
+#task_list a {
+    color: var(--primary-color);
+}
+
+.task-management {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+}
+
+.form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.form input,
+.form select {
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    width: 200px;
+}
+
+.form input:focus,
+.form select:focus {
+    border-color: #4caf93;
+    outline: none;
+}
+
+.search-button {
+    background-color: #4caf93;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    margin-left: auto;
+}
+
+.search-button:hover {
+    background-color: #45a049;
+}
+
+/* Parent Filter Styling */
+.filter-parent {
+    padding: 12px;
+    font-size: 16px;
+    background-color: #4caf93;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-block;
+}
+
+/* Filter dropdown (hidden by default) */
+.filter-section {
+    display: none;
+    position: absolute;
+    background-color: var(--content-color-background);
+    box-shadow: 0 2px 2px rgb(0 0 0 / 20%);
+    width: fit-content;
+    gap: 10px;
+    justify-content: space-around;
+    padding: 10px;
+    border-radius: 10px;
+    flex-wrap: wrap;
+    right: 50%;
+    transform: translateX(50%);
+}
+
+.filter-section select {
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#status .search-input {
+    display: none !important;
+}
+
+/* Task table-like layout */
+.task-list {
+    margin-top: 20px;
+}
+
+/* Table headers */
+.task-header {
+    font-weight: bold;
+    color: #333;
+    padding-bottom: 10px;
+}
+
+/* Task row items */
+.task-item {
+    padding: 10px 0;
+}
+
+.task-item h4 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Container for the filter group */
+.filter-group {
+    position: relative; /* Needed for positioning the dropdown */
+    display: block; /* Stack elements vertically */
+    margin-bottom: 10px; /* Space below the filter group */
+}
+
+/* Style for the toggle button to look like a select input */
+.member-dropdown-btn {
+    background-color: white; /* White background */
+    color: #333; /* Dark text color */
+    border: 1px solid #ccc; /* Light border */
+    padding: 10px; /* Padding around the text */
+    font-size: 14px; /* Font size */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 4px; /* Rounded corners */
+    display: flex; /* Flex for alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space between items */
+    width: 155px;
+    margin-top: 5px;
+}
+
+/* Change border color on focus */
+.member-dropdown-btn:focus {
+    border-color: #4caf93; /* Primary color border on focus */
+    outline: none; /* Remove default outline */
+}
+
+/* Change background color on hover */
+.member-dropdown-btn:hover {
+    background-color: #f9f9f9; /* Slightly darker shade on hover */
+}
+
+/* Dropdown container styles */
+.member-dropdown-content {
+    position: absolute; /* Positioned relative to the nearest positioned ancestor */
+    background-color: white; /* Background color */
+    border: 1px solid #ccc; /* Light border */
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    z-index: 1; /* Ensure it sits above other elements */
+    width: 200px; /* Adjust width as necessary */
+    display: none; /* Hidden by default */
+}
+
+/* Search input field styles */
+.member-dropdown-content input {
+    width: calc(100% - 10px); /* Full width minus padding */
+    padding: 5px; /* Padding inside the input */
+    border: 1px solid #ccc; /* Border for input */
+    border-radius: 4px; /* Rounded corners */
+    margin: 5px; /* Margin around the input */
+}
+
+/* Member item styles */
+.member-item {
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    padding: 8px 10px; /* Padding inside each item */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+/* Change background on hover for member items */
+.member-item:hover {
+    background-color: #f0f0f0; /* Highlight background on hover */
+}
+
+/* Member avatar styles */
+.member-avatar {
+    width: 30px; /* Avatar width */
+    height: 30px; /* Avatar height */
+    border-radius: 50%; /* Make it circular */
+    margin-right: 8px; /* Space between avatar and email */
+}
+
+/* Member email styles */
+.member-email {
+    font-size: 14px; /* Font size for email text */
+}
+
+.search-block {
+    display: flex;
+}
+
+.search-block input {
+    width: 40%;
+    padding: 10px;
+    outline: none;
+}
+
+.search-block select {
+    margin: 0 20px;
+}
+
+
+/* Header Styling */
+#header {
+    display: flex;
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    justify-content: space-between;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+}
+
+.task-header-title {
+    width: 50% !important;
+    text-align: left;
+}
+
+.task-max-width {
+     width: 150px;
+}
+
+/* Result Section Styling */
+#result {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+/* Individual Task Item */
+#result-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    text-decoration: none;
+}
+
+#result-item:hover {
+    background-color: #f1f1f1;
+}
+
+.task-item {
+    text-align: center;
+    font-size: 14px;
+    color: black;
+}
+
+.task-item-title {
+    width: 50% !important;
+    text-align: left;
+}
+
+/* Task Title Styling */
+.task-item h4 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
+
+/* Priority Colors */
+.task-item p {
+    margin: 0;
+}
+
+.task-item p {
+    font-weight: bold;
+}
+
+.priority-0 {
+    color: red;
+}
+
+.priority-1 {
+    color: #fa8c16;
+}
+
+.priority-2 {
+    color: #18baff;
+}
+
+/* Status Colors */
+.status-4 {
+    color: #a1af2f;
+}
+
+.status-3 {
+    color: #5eb5a6;
+}
+
+.status-2 {
+    color: #ed622f;
+}
+
+.status-1 {
+    color: #4488c5;
+}
+
+.status-0 {
+    color: #ed8077;
+}
+
+/* Deadline Colors */
+.task-item p.deadline-overdue {
+    color: red;
+    font-weight: bold;
+}
+
+.task-item p.deadline-upcoming {
+    color: #797979;
+}
+
+/* Flexbox layout for the search and filter section */
+.form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap; /* Allows wrapping if the screen is too small */
+}
+
+/* Search input and sort dropdown styling */
+.form input,
+.form select {
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    width: 200px; /* Fixed width for search input and sort dropdown */
+    min-width: 150px; /* Minimum width for responsiveness */
+    box-sizing: border-box; /* Ensures the padding does not affect the width */
+}
+
+/* Filter button */
+.filter-parent {
+    padding: 12px;
+    font-size: 16px;
+    background-color: #4caf93;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap; /* Prevents text from wrapping */
+}
+
+/* Ensure filter dropdowns maintain fixed width */
+.filter-section select {
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 250px; /* Set a consistent maximum width */
+    margin-bottom: 10px;
+    box-sizing: border-box; /* Prevents the padding from affecting the width */
+}
+
+.task-row {
+    display: flex;  /* Use flexbox for alignment */
+    text-decoration: none; /* Remove underline from links */
+    color: inherit; /* Inherit text color */
+}
+
+.task-row:hover {
+    background-color: #f0f0f0; /* Change background on hover */
+}
+
+.task-item {
+    display: inline-block;
+}
+
+.task-name {
+    visibility: hidden; /* Hide the name initially */
+    opacity: 0;         /* Make the name transparent */
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7); /* Dark background for visibility */
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    transition: visibility 0s, opacity 0.3s ease-in-out; /* Smooth transition */
+}
+
+.task-item:hover .task-name {
+    visibility: visible; /* Show the name on hover */
+    opacity: 1;          /* Fade in the name */
+}
