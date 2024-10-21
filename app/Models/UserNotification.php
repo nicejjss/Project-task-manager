@@ -11,7 +11,7 @@ class UserNotification extends Model
     protected $primaryKey = 'notification_id';
 
     protected $fillable = [
-        'email',
+        'user_id',
         'project_id',
         'task_id',
         'notification_type',

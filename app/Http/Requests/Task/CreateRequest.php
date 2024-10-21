@@ -29,6 +29,8 @@ class CreateRequest extends BaseRequest
             'tasktype' => 'nullable',
             'deadline' => 'nullable|date',
             'attachments' => 'nullable',
+            'attachments.*' => 'file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,txt,jpg,jpeg,png,gif,svg,json,xml,csv|max:256000',
+            'parent' => 'nullable',
         ];
     }
 

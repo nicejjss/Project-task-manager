@@ -6,6 +6,13 @@
 <main class="content">
     <div class="container">
         <h1 id="create-text">Công Việc Mới</h1>
+
+        @if($parentTask)
+            <div style="margin-bottom: 10px">
+                <div style="display: inline">Công việc cha: </div>
+                <a href="/project/{{$projectId}}/task/{{$parentTask['task_id']}}" onclick="displayLoading()">{{$parentTask['title']}}</a>
+            </div>
+        @endif
         @if ($errors->any())
             <div class="error" style="margin: 20px 0;">
                 <ul>
@@ -18,6 +25,9 @@
         <form id="taskForm" enctype="multipart/form-data">
             @csrf
             <div class="form-row">
+                @if($parentTask)
+                    <input name="parent" id="parent" value="{{$parentTask['task_id']}}" hidden="">
+                @endif
                 <!-- Left Column (70%) -->
                 <div class="column-left">
                     <div class="form-group">
@@ -57,8 +67,6 @@
                                 @foreach($taskTypes as $taskType)
                                     <option value="{{$taskType['tasktype_id']}}">{{$taskType['tasktype_name']}}</option>
                                 @endforeach
-                            @else
-                                <option value="">Không có loại công việc nào</option>
                             @endif
                         </select>
                     </div>
@@ -92,6 +100,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
 <script>
     var projectId = {{$projectId}}; // Pass the $projectId variable to your JavaScript file
+    var hasParent = {{data_get($parentTask, 'task_id', 0)}}
 </script>
 <script src="/js/page/taskcreate.js"> </script>
 @include('layouts.footer')

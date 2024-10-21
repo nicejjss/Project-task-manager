@@ -14,9 +14,10 @@ class TaskHistory extends Model
 
     protected $fillable = [
         'task_id',
-        'changed_by',
-        'change_description',
-        'change_type',
+        'user_id',
+        'description',
+        'type',
+        'project_id',
         'created_at',
     ];
 

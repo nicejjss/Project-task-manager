@@ -68,7 +68,7 @@
             {!! $project !!}
         </div>
         <div id="right-side">
-            <div id="status-text">Trạng Thái Công Việc</div>
+            <div id="status-text">Tổng quan Công Việc</div>
             <div>
                 <canvas id="myChart"></canvas>
             </div>
@@ -132,7 +132,7 @@
                             @foreach($members as $key => $member)
                                 <li class="member-item">
                                     <img src="{{ $member['avatar'] ?? asset('avatar.png') }}" alt="Avatar" class="member-avatar">
-                                    <span class="member-email">{{$member['email']}} ({{ $key ? 'Member' : 'Owner' }})</span>
+                                    <span class="member-email">{{$member['email']}} ({{ $key ? 'Thành viên' : 'Quản lý' }})</span>
                                 </li>
                             @endforeach
                         </ul>
@@ -145,7 +145,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');
-
         var openCount = {{$tasks['openCount']}};
         var inProgressCount = {{$tasks['inProgressCount']}};
         var doneCount = {{$tasks['doneCount']}};
@@ -174,13 +173,13 @@
             {
                 label: 'Hoàn thành',
                 data: [doneCount],
-                backgroundColor: '#a1af2f',
+                backgroundColor: '#5eb5a6',
                 barThickness: 15,
             },
             {
                 label: 'Đã Đóng',
                 data: [doneCount],
-                backgroundColor: '#af2f2f',
+                backgroundColor: '#a1af2f',
                 barThickness: 15,
             }
         ];

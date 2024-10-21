@@ -7,11 +7,11 @@
         <i style="display: none" class="fa-solid fa-xmark" id="close"></i>
     </div>
     <ul>
-        <li id="project_index"><a href="/project/{{$projectId}}">Tổng Quan Dự Án</a></li>
-        <li id="task_create"><a href="/project/{{$projectId}}/task/create">Tạo Task</a></li>
-        <li id="task_list"><a href="/project/{{$projectId}}/task/list">Danh Sách Công Việc</a></li>
-        <li id="task_analytic"><a href="/project/{{$projectId}}/analytic">Thống Kê</a></li>
-        <li id="meeting"><a href="/project/{{$projectId}}/meeting">Meeting</a></li>
+        <li id="project_index"><a href="/project/{{$projectId}}" onclick="displayLoading()">Tổng Quan Dự Án</a></li>
+        <li id="task_create"><a href="/project/{{$projectId}}/task/create" onclick="displayLoading()">Tạo Công Việc</a></li>
+        <li id="task_list"><a href="/project/{{$projectId}}/task/list" onclick="displayLoading()">Danh Sách Công Việc</a></li>
+        <li id="task_analytic"><a href="/project/{{$projectId}}/analytic" onclick="displayLoading()">Thống Kê</a></li>
+        <li id="meeting"><a href="/project/{{$projectId}}/meeting" onclick="displayLoading()">Meeting</a></li>
     </ul>
 </nav>
 

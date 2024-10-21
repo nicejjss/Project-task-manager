@@ -3,126 +3,197 @@
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="/css/page/taskindex.css">
 <main class="content">
-{{--    TODO: not finish UI--}}
+    {{--    TODO: not finish UI--}}
     <div class="container">
-        @if ($errors->any())
-            <div class="error" style="margin: 20px 0;">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+        @if($taskParent)
+            <div style="margin-bottom: 10px">
+                <div style="display: inline">Công việc cha:</div>
+                <a href="/project/{{$projectId}}/task/{{$taskParent['task_id']}}">{{$taskParent['title']}}</a>
             </div>
         @endif
         <div class="form-row">
             <!-- Left Column (70%) -->
             <div class="column-left">
-                <div class="form-group">
-                    <label for="title">Tên Công Việc: Quanr lysabksbfka bkef asdfa we f</label>
+                <div class="comment-own">
+                    <img class="avatar-app" src="{{ $creator['avatar'] ?? asset('avatar.png') }}" alt="{{$creator['name']}}">
+                    <div class="comment-own-infor">
+                        <h4 class="comment-own-infor-name">{{$creator['name']}}</h4>
+                        <p class="comment-own-infor-date">{{$createTime}}</p>
+                    </div>
                 </div>
+                <div id="task-name" class="form-group">
+                    <label for="title"><p style="display: inline">Tên Công Việc:</p> {{$title}}</label>
+                </div>
+                <hr>
                 <div class="form-group">
-                    <label for="description">Mô Tả:</label>
+                    <label id="description">Mô Tả:</label>
                     <div id="editor" style="min-height: 200px;height: 450px;">
-{{--                        {!! !!}--}}
+                        {!! $description !!}
                     </div>
                 </div>
             </div>
             <!-- Right Column (30%) -->
             <div class="column-right">
                 <div class="form-group">
-                    <label for="priority">Độ Ưu Tiên: <span style="color: red">Cao</span></label>
+                    <label for="priority">Độ Ưu Tiên: <span
+                            class="priority-{{$priority}}">{{$priorityMessage}}</span></label>
                 </div>
                 <div class="form-group">
-                    <label for="priority">Trạng Thái: <span style="color: red">Cần Thực Hiện</span></label>
+                    <label for="priority">Trạng Thái: <span
+                            class="priority-{{$status}}">{{$statusMessage}}</span></label>
                 </div>
                 <div class="form-group">
-                    <label for="user">Người Thực Hiện: <img class="avatar-app" src="{{asset('avatar.png')}}"></label>
+                    <label id="assignee" for="user">Người Thực Hiện:
+                        <img class="avatar-app" src="{{ $assigneeAvatar ?? asset('avatar.png') }}"
+                             alt="{{$assigneeName}}">
+                        <p class="assignee-name">{{$assigneeName}}</p></label>
                 </div>
                 <div class="form-group">
-                    <label for="deadline">Loại Công Việc: Code</label>
+                    <label for="deadline">Loại Công Việc: {{$type}}</label>
                 </div>
                 <div class="form-group">
-                    <label for="deadline">Thời Hạn: 12/07/2024</label>
+                    <label for="deadline">Thời Hạn: <label
+                            class="{{ $isDeadline ? 'deadline-overdue' : 'deadline-upcoming' }}">{{$deadline}}</label></label>
                 </div>
-
+                <hr>
                 <div class="form-group">
-                    <label for="deadline">Hoạt Động</label>
+                    {{--                    TODO: add history--}}
+                    <p class="history-prefix">Hoạt Động:</p>
+                    <div class="log-list" id="log-list">
+                            @foreach($histories as $history)
+                                <div class="log-item">
+                                    <div class="comment-own">
+                                        <img class="avatar-app" src="{{ $history['avatar'] ?? asset('avatar.png') }}" alt="{{$history['name']}}">
+                                        <div class="comment-own-infor">
+                                            <p class="comment-own-infor-name">{{$history['name']}}</p>
+                                            <p class="comment-own-infor-date">{{$history['createTime']}}</p>
+                                        </div>
+                                    </div>
+                                    <p class="history-description">
+                                        {{$history['description']}}
+                                    </p>
+                                </div>
+                            @endforeach
+                    </div>
                 </div>
 
             </div>
         </div>
     </div>
 
-    <div class="child-taks">
-        <!-- File Attachment -->
-        <div class="form-group">
-            <label>Công Việc Con <span>▼</span></label>
-        </div>
+    <div class="child-task container">
+        <!-- Hidden Checkbox -->
+        <input type="checkbox" id="toggle-child-tasks" style="display: none;"/>
+
+        <!-- Label as Toggle -->
+        <label for="toggle-child-tasks" class="task-label">
+            Công Việc Con <span>▼</span>
+        </label>
+
         <!-- File List -->
-        <ul id="child-task-list"></ul>
+        <ul id="child-task-list">
+            <li class="child-task-item">
+                <a href="/project/{{$projectId}}/task/{{$taskId}}/child/create" onclick="displayLoading()">+ Thêm công việc con</a>
+            </li>
+            @foreach($childTasks as $childTask)
+                <li class="child-task-item">
+                    <a href="/project/{{$projectId}}/task/{{$childTask['task_id']}}" onclick="displayLoading()">{{$childTask['title']}}</a>
+                </li>
+            @endforeach
+        </ul>
     </div>
 
-    <div class="file-attachment">
+    <div class="file-attachment container">
         <!-- File Attachment -->
-        <div class="form-group">
-            <label>Files Đính Kèm <span>▼</span></label>
-        </div>
+        <input type="checkbox" id="toggle-files" style="display: none;"/>
+
+        <!-- Label to Toggle the File List -->
+        <label for="toggle-files" class="file-label">
+            Files Đính Kèm <span>▼</span>
+        </label>
+
         <!-- File List -->
-        <ul id="fileList"></ul>
+        <ul id="file-list">
+            <li class="file-item">
+                <!-- Clickable text to trigger file input -->
+                <span id="upload-text" style="cursor: pointer; color: blue; text-decoration: underline;">Thêm file</span>
+
+                <!-- Hidden file input -->
+                <input type="file" id="file-input" name="file" style="display: none;"/>
+
+                <!-- Submit button -->
+                <button id="submit-file">Submit</button>
+
+                <!-- Placeholder for displaying the returned file -->
+                <div id="file-display"></div>
+            </li>
+            @foreach($attachments as $attachment)
+                <li class="file-item">
+                    <a href="/project/{{$projectId}}/task/{{$taskId}}/attachment/{{$attachment['file_id']}}/download">
+                        {{$attachment['fileName']}}
+                    </a>
+                    <a href="/project/{{$projectId}}/task/{{$taskId}}/attachment/{{$attachment['file_id']}}/delete"
+                       class="delete-cross" title="Xóa" data-delete-url="/project/{{$projectId}}/task/{{$taskId}}/attachment/{{$attachment['file_id']}}/delete">×</a>
+                </li>
+            @endforeach
+        </ul>
     </div>
 
     <h3>Bình Luận</h3>
     <!-- Comment Display Area -->
     <div class="comments-section" id="commentsSection">
         <!-- Comments will be dynamically generated here -->
-        <div class="comment">
-            <img class="avatar-app" src="https://via.placeholder.com/50" alt="User Avatar">
-            <div class="comment-details">
-                <div class="notified-users">
-                    <span>Thông báo tới: <strong>Nguyen A, Le B</strong></span>
+        @foreach($comments as $comment)
+            <div class="comment container">
+                <div class="comment-own">
+                    <img class="avatar-app" src="{{ $comment['commentAvatar'] ?? asset('avatar.png') }}" alt="{{$comment['commentName']}}">
+                    <div class="comment-own-infor">
+                        <h4 class="comment-own-infor-name">{{$comment['commentName']}}</h4>
+                        <p class="comment-own-infor-date">{{$comment['created_at']}}</p>
+                    </div>
                 </div>
-                <p class="comment-content">Đây là nội dung của bình luận số 1.</p>
-            </div>
-        </div>
-        <div class="comment">
-            <img class="avatar-app" src="https://via.placeholder.com/50" alt="User Avatar">
-            <div class="comment-details">
-                <div class="notified-users">
-                    <span>Thông báo tới: <strong>Tran C, Pham D</strong></span>
+                <div class="comment-details">
+                    <div class="notified-users">
+                        <p class="notify-prefix">Thông báo tới:</p>
+                        @foreach($comment['notification'] as $userNotify )
+                            <div class="notify-container">
+                                <img class="avatar-app avatar-app-notify" src="{{ $userNotify['avatar'] ?? asset('avatar.png') }}" alt="{{$userNotify['name']}}">
+                                <div class="notify-name">{{$userNotify['name']}}</div>
+                            </div>
+                        @endforeach
+                    </div>
+                    <p class="comment-content">{{$comment['comment_text']}}</p>
                 </div>
-                <p class="comment-content">Đây là nội dung của bình luận số 2.</p>
             </div>
-        </div>
-        <div class="comment">
-            <img class="avatar-app" src="https://via.placeholder.com/50" alt="User Avatar">
-            <div class="comment-details">
-                <div class="notified-users">
-                    <span>Thông báo tới: <strong>Nguyen A</strong></span>
-                </div>
-                <p class="comment-content">Đây là nội dung của bình luận số 3.</p>
-            </div>
-        </div>
+        @endforeach
     </div>
 
     <!-- Add Comment Form -->
-    <div class="add-comment-form">
+    <div class="add-comment-form container">
         <div class="comment-input">
             <h3>Thêm Bình Luận</h3>
             <form id="commentForm">
+                <input name="projectId" id="projectId" value="{{$projectId}}" hidden>
+                <input name="taskId" id="taskId" value="{{$taskId}}" hidden>
                 <div class="comment-input-area">
-                    <div class="column-left-comment"><div class="form-group">
-                            <textarea id="commentText" class="form-control" rows="4" placeholder="Nhập bình luận..."></textarea>
-                        </div></div>
-                    <div class="column-right-comment"><div class="notified-area">
-                            <h4>Người Nhận Thông Báo</h4>
-                            <input type="text" id="userSearch" class="form-control" placeholder="Tìm người dùng để thông báo..." autocomplete="off">
-                            <div id="selectedUsers" class="selected-users"></div> <!-- Selected users list always visible -->
+                    <div class="column-left-comment">
+                        <div class="form-group">
+                            <textarea id="commentText" class="form-control" rows="4"
+                                      placeholder="Nhập bình luận..."></textarea>
+                        </div>
+                    </div>
+                    <div class="column-right-comment">
+                        <div class="notified-area">
+                            <h4 class="notify-label">Người Nhận Thông Báo</h4>
+                            <input type="text" id="userSearch" class="form-control"
+                                   placeholder="Nhập tên cần tìm..." autocomplete="off">
+                            <div id="selectedUsers" class="selected-users"></div>
+                            <!-- Selected users list always visible -->
                             <ul id="userResults" class="user-results">
-                                <li class="user-item" data-user-id="1" data-user-name="Nguyen A">Nguyen A</li>
-                                <li class="user-item" data-user-id="2" data-user-name="Le B">Le B</li>
-                                <li class="user-item" data-user-id="3" data-user-name="Tran C">Tran C</li>
-                                <li class="user-item" data-user-id="4" data-user-name="Pham D">Pham D</li>
-                            </ul> <!-- Hardcoded user list -->
+                                @foreach($members as $member)
+                                    <li class="user-item" data-user-id="{{$member['id']}}" data-user-name="{{$member['name']}}">{{$member['name']}}</li>
+                                @endforeach
+                            </ul>
                             <input type="hidden" name="notifiedUsers" id="notifiedUsers" value="">
                         </div>
                     </div>
@@ -139,8 +210,8 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-{{--<script>--}}
-{{--    var projectId = {{$projectId}}; // Pass the $projectId variable to your JavaScript file--}}
-{{--</script>--}}
+<script>
+    let members = @json($members->toArray());
+</script>
 <script src="/js/page/taskindex.js"></script>
 @include('layouts.footer')

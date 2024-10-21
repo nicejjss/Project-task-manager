@@ -28,7 +28,7 @@ document.addEventListener("click", function (event) {
 });
 
 // Toggle dropdown display
-function toggleDropdown(dropdownId) {
+function toggleDropdownBtn(dropdownId) {
     var dropdown = document.getElementById(dropdownId);
     dropdown.style.display = (dropdown.style.display === 'none' || dropdown.style.display === '') ? 'block' : 'none';
 }
@@ -68,4 +68,3 @@ function setInputValue(inputType, realValue, alias) {
 
     console.log("Selected Alias: " + alias + " | Real Value: " + realValue);
 }
-

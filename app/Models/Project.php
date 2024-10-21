@@ -10,6 +10,7 @@ class Project extends Model
 
     protected $primaryKey = 'project_id';
 
+    //TODO: add cloded_plan_at
     protected $fillable = [
         'owner_id',
         'project_name',
@@ -17,6 +18,7 @@ class Project extends Model
         'status',
         'created_at',
         'updated_at',
+        'closed_plan_at',
     ];
 
     public $timestamps = true;

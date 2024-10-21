@@ -3,6 +3,8 @@
 namespace App\Services\Authentication;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ActiveUserService extends BaseService
 {
@@ -21,7 +23,19 @@ class ActiveUserService extends BaseService
                 return $user;
             }
 
-            return $this->repository->create($credentials);
+            $avatarLink = data_get($credentials, 'avatar');
+            $credentials['avatar'] = null;
+            $user = $this->repository->create($credentials);
+            $extPath = pathinfo($avatarLink, PATHINFO_EXTENSION);
+            $ext = !empty($extPath) ? $extPath : 'png';
+            $fileName = 'avatar_' . $user->id . '_' . Str::random(10);
+            $path = $fileName . '.' . $ext;
+
+            Storage::disk('gcs')->put('user/' . $path, file_get_contents($avatarLink), 'public');
+            $user->avatar = 'user/' . $path;
+            $user->save();
+
+            return $user;
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             return false;

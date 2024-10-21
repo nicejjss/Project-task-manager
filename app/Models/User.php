@@ -18,7 +18,6 @@ class User extends Authenticate
         'email',
         'password',
         'avatar',
-        'description',
         'google_id',
         'access_token',
         'refresh_token',

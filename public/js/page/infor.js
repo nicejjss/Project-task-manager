@@ -56,11 +56,9 @@ document.getElementById('saveBtn').addEventListener('click', function (e) {
     // Append user information
     var name = document.getElementById('name').value;
     var email = document.getElementById('email').value;
-    var description = document.getElementById('description').value;
 
     formData.append('name', name);
     formData.append('email', email);
-    formData.append('description', description);
 
     if (name === '' || email === '') {
         showModal('Vui lòng điền đầy đủ thông tin');

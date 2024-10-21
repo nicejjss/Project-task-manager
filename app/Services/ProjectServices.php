@@ -20,12 +20,19 @@ class ProjectServices
     private ProjectRepository $projectRepository;
     private ProjectMemberRepository $projectMemberRepository;
     private UserRepository $userRepository;
+    private TaskTypeRepository $taskTypeRepository;
 
-    public function __construct(ProjectRepository $projectRepository, ProjectMemberRepository $projectMemberRepository, UserRepository $userRepository)
+    public function __construct(
+        ProjectRepository $projectRepository,
+        ProjectMemberRepository $projectMemberRepository,
+        UserRepository $userRepository,
+        TaskTypeRepository $taskTypeRepository,
+    )
     {
         $this->projectRepository = $projectRepository;
         $this->projectMemberRepository = $projectMemberRepository;
         $this->userRepository = $userRepository;
+        $this->taskTypeRepository = $taskTypeRepository;
     }
 
 
@@ -40,6 +47,13 @@ class ProjectServices
                 'status' => $status,
                 'owner_id' => $ownerid,
             ]);
+
+            $this->taskTypeRepository->create([
+                'project_id' => $project->project_id,
+                'task_type_id' => 0,
+                'tasktype_name' => 'Không Xác Định',
+            ]);
+
             $file = data_get($data, 'description');
 
             if($file){
@@ -56,7 +70,7 @@ class ProjectServices
             $invitedPeople = array_diff($invitedPeople, $ownerEmail);
 
             if (count($invitedPeople)) {
-                NotificationJob::dispatch($invitedPeople, $project->project_id, $project->project_name, NotificationType::Invite);
+                NotificationJob::dispatch($invitedPeople, $project->project_id, $project->project_name, type: NotificationType::Invite);
             }
 
             return $project->project_id;
@@ -107,10 +121,10 @@ class ProjectServices
             'text' => ProjectStatus::MESSAGE($project->status),
         ];
 
-        $openCount = $tasks->where(['status', '=', TaskStatus::Open])->count();
-        $inProgressCount = $tasks->where(['status', '=', TaskStatus::Progressing])->count();
-        $doneCount = $tasks->where(['status', '=', TaskStatus::Done])->count();
-        $closedCount = $tasks->where(['status', '=', TaskStatus::Closed])->count();
+        $openCount = $tasks->where('status', TaskStatus::Open)->count();
+        $inProgressCount = $tasks->where('status', TaskStatus::Progressing)->count();
+        $doneCount = $tasks->where('status', '=', TaskStatus::Done)->count();
+        $closedCount = $tasks->where('status', '=', TaskStatus::Closed)->count();
 
         $projectDescription = Storage::disk('gcs')->get($project->description);
 
@@ -147,6 +161,7 @@ class ProjectServices
             'projectDescription' => $projectDescription,
             'isClose' => $project->status === ProjectStatus::Closed,
             'status' => $status,
+            'created_at' => $project->c
             'tasks' => [
                 'count' => $taskCount,
                 'openCount' => $openCount,
@@ -167,10 +182,10 @@ class ProjectServices
             $user = $this->userRepository->getUser(['email' => $email]);
 
             if (!$user) {
-                NotificationJob::dispatch([$email], $projectId, $project->project_name);
+                NotificationJob::dispatch([$email], $projectId, $project->project_name, type: NotificationType::Invite);
                 return 1;
             } elseif (!$project->members()->where([['user_id', '=', $user->id]])->count() && $project->owner->id !== $user->id) {
-                NotificationJob::dispatch([$email], $projectId, $project->project_name);
+                NotificationJob::dispatch([$email], $projectId, $project->project_name, type: NotificationType::Invite);
                 return 2;
             }
 
@@ -220,7 +235,7 @@ class ProjectServices
             $removeIDs = Arr::flatten($this->userRepository->whereIn('email', $removeEmails)->get(['id'])->toArray());
 
             if (count($addEmails)) {
-                NotificationJob::dispatch($addEmails, $project->project_id, $project->project_name);
+                NotificationJob::dispatch($addEmails, $project->project_id, $project->project_name, type: NotificationType::Invite);
             }
 
             if (count($removeIDs)) {

@@ -23,6 +23,8 @@ class Task extends Model
         'status',
         'created_at',
         'updated_at',
+        'tasktype_id',
+        'parent_id',
     ];
 
     public $timestamps = true;

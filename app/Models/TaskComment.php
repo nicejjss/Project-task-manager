@@ -12,6 +12,7 @@ class TaskComment extends Model
 
     protected $fillable = [
         'task_id',
+        'project_id',
         'user_id',
         'comment_text',
         'created_at',
@@ -31,5 +32,10 @@ class TaskComment extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function commentNotifications()
+    {
+        return $this->hasMany(CommentNotification::class, 'comment_id');
     }
 }

@@ -94,6 +94,7 @@ body {
     flex-wrap: wrap;
     right: 50%;
     transform: translateX(50%);
+    z-index: 99;
 }
 
 .filter-section select {
@@ -124,6 +125,7 @@ body {
 /* Task row items */
 .task-item {
     padding: 10px 0;
+    position: relative;
 }
 
 .task-item h4 {

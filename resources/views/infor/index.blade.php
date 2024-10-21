@@ -11,9 +11,6 @@
 
                 <label for="email">Email:<span style="color: red">*</span></label>
                 <input type="email" id="email" name="email" placeholder="Email của bạn" required value="{{$user->email}}">
-
-                <label for="description">Mô tả:</label>
-                <textarea id="description" name="description" placeholder="Mô tả">{{$user->description}}</textarea>
         </div>
         <div class="avatar-section">
             <img id="avatar" src="{{ $avatar ?? asset('avatar.png') }}" alt="User Avatar" class="avatar-img">

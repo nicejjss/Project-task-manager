@@ -7,17 +7,20 @@ use BenSampo\Enum\Enum;
 final class NotificationType extends Enum
 {
     const MESSAGE = [
-        'Được Mời Vào Project',
-        'Được Giao Task',
-        'Có Comment Mới',
-        'Cập Nhật Mới',
+        'Mời vào dự án',
+        'Có công việc cần làm',
+        'Được nhắc đến trong bình luận',
+        'Công việc cần phê duyệt',
+        'Công việc được phê duyệt',
+        'Có cuộc họp trực tuyến',
     ];
 
     const Invite = 0;
-
     const Assign = 1;
     const Comment = 2;
-    const ChangeContent = 3;
+    const Approve = 4;
+    const Approved = 5;
+    const Meeting = 6;
 
     public static function MESSAGE($status): string
     {

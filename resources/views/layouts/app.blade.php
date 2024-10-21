@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Any.Task</title>
     <link rel="stylesheet" href="/css/layouts/app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -30,6 +31,7 @@
         </div>
         <div class="notification" style="font-size: 20px">
             <i style="color: #707070;" id="notification-icon" class="fa-solid fa-bell notification-icon"></i>
+            <span id="notification-dot" class="notification-dot"></span>
         </div>
     </div>
 </header>
@@ -42,8 +44,35 @@
         </div>
     </div>
     <ul id="notification-list">
-        <li>Không có thông báo nào</li>
+        @if(count($notifications))
+            @foreach($notifications as $notification)
+                @if($notification['type'] == 0)
+                    <li>
+                        <!-- Button for invitation, dynamically holds project data -->
+                        <button class="show-popup"
+                                data-project-id="{{ $notification['project_id'] }}"
+                                data-project-name="{{ $notification['project_name'] }}">
+                            Bạn Có lời mời vào dự án {{ $notification['project_name'] }}
+                        </button>
+                    </li>
+                @else
+                    <li>
+                        <a href="{{ $notification['url'] }}">
+                            {{ $notification['message'] }}
+                        </a>
+                    </li>
+                @endif
+            @endforeach
+        @else
+            <li>Không có thông báo nào</li>
+        @endif
     </ul>
+
+    <div id="notification-popup" style="display:none;">
+        <p id="popup-message"></p>
+        <button id="popup-yes">Yes</button>
+        <button id="popup-no">No</button>
+    </div>
 </div>
 <style>
     .container {
@@ -95,8 +124,9 @@
 
     var channel = pusher.subscribe('channels.user_{{$user['id']}}');
     channel.bind('invitation', function(data) {
-        console.log(data);
-        alert(JSON.stringify(data));
+        document.getElementById('notification-dot').style.display = 'block';
+
+        alert(data.msg);
     });
 
     function showToast(type, message = null) {
@@ -121,5 +151,39 @@
             toast.className = 'toast hide';
         }, 2000);
     }
+
+    const popup = document.getElementById('notification-popup');
+    const popupMessage = document.getElementById('popup-message');
+    const popupYes = document.getElementById('popup-yes');
+    const popupNo = document.getElementById('popup-no');
+    let currentProjectId = null; // Track the project id of the current popup
+
+    // Function to show the popup with specific project information
+    document.querySelectorAll('.show-popup').forEach(button => {
+        button.addEventListener('click', function() {
+            currentProjectId = this.getAttribute('data-project-id');
+            const projectName = this.getAttribute('data-project-name');
+
+            // Set the project name in the popup message
+            popupMessage.textContent = `Bạn Có lời mời vào dự án ${projectName}`;
+
+            // Show the popup
+            popup.style.display = 'block';
+        });
+    });
+
+    // Handle the "Yes" button click - redirect to the specific project URL
+    popupYes.addEventListener('click', function() {
+        if (currentProjectId) {
+            // Redirect to the project accept URL (you can customize the URL format)
+            window.location.href = `/project/${currentProjectId}/accept-invite`;
+        }
+    });
+
+    // Handle the "No" button click - close the popup
+    popupNo.addEventListener('click', function() {
+        // Close the popup
+        popup.style.display = 'none';
+    });
 </script>
 <script src="/js/layouts/app.js"></script>

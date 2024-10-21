@@ -73,6 +73,11 @@ document.getElementById('taskForm').addEventListener('submit', function(event) {
     const taskType = document.getElementById('tasktype').value;
     const deadline = document.getElementById('deadline').value;
 
+    let parent = 0;
+    if (hasParent) {
+        parent = document.getElementById('parent').value;
+    }
+
     // Clear previous errors from the existing error section
     clearErrors();
 
@@ -99,11 +104,29 @@ document.getElementById('taskForm').addEventListener('submit', function(event) {
     formData.append('priority', priority);
     formData.append('tasktype', taskType);
     formData.append('deadline', deadline);
+    formData.append('parent', parent);
 
+    let fileErrors = false; // Flag to track if there are file errors
+    const allowedExtensions = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'jpg', 'jpeg', 'png', 'gif', 'svg', 'json', 'xml', 'csv'];
     // Handle file attachments (if any)
     selectedFiles.forEach((file, index) => {
-        formData.append('attachments[]', file); // Append each file to FormData
+        const fileExtension = file.name.split('.').pop().toLowerCase(); // Get file extension
+
+        // Validate file extension
+        if (allowedExtensions.includes(fileExtension)) {
+            formData.append('attachments[]', file); // Append each file to FormData
+        } else {
+            let errors = [`Chỉ chấp nhận các tệp đính kèm: ${allowedExtensions.join(', ')}`]
+            displayErrors(errors);
+            fileErrors = true;
+        }
     });
+
+    // If there were file errors, stop form submission
+    if (fileErrors) {
+        loadingOverlay.style.display = 'none';
+        return; // Stop form submission if validation fails
+    }
 
     // Post the FormData object (replace URL with your actual endpoint)
     fetch(`http://127.0.0.1:8000/project/${projectId}/task/create`, {
@@ -116,9 +139,13 @@ document.getElementById('taskForm').addEventListener('submit', function(event) {
     })
         .then(response => response.json())
         .then(data => {
-            // window.location.href = "http://127.0.0.1:8000/project/" + data;
-            showToast(1, 'Tạo thành công')
-            window.location.href = "http://127.0.0.1:8000/project/" + projectId + '/task/' + data;
+            if (Number.isInteger(data)) {
+                showToast(1, 'Tạo thành công')
+                window.location.href = "http://127.0.0.1:8000/project/" + projectId + '/task/' + data;
+            } else {
+                let errors = ['Lỗi không xác định'];
+                displayErrors(errors);
+            }
         })
         .catch((error) => {
             showToast(2, 'Có lỗi xảy ra')

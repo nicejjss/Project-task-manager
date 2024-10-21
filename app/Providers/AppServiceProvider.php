@@ -6,6 +6,7 @@ use App\Custom\Auth\CustomGuard;
 use App\Custom\Auth\CustomProvider;
 use App\Models\Project;
 use App\Models\ProjectMember;
+use App\Models\UserNotification;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -48,9 +49,13 @@ class AppServiceProvider extends ServiceProvider
                  }
             }
 
+            $notifications = app(UserNotification::class)
+                ->where([['user_id', '=', $user->id]])->get();
+
             $view->with([
                 'user' => $user,
                 'avatar' => $avatar,
+                'notifications' => $notifications,
                 'key' => config('broadcasting.connections.pusher.key'),
             ]);
         });

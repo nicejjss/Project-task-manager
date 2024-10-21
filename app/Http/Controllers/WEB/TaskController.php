@@ -14,8 +14,8 @@ class TaskController extends BaseController
         $this->taskServices = $taskServices;
     }
 
-    public function taskCreateView(string $projectId) {
-        $data = $this->taskServices->createView((int)$projectId);
+    public function taskCreateView(string $projectId, int $taskId = 0) {
+        $data = $this->taskServices->createView((int)$projectId, $taskId);
         return view('task.create', $data);
     }
 
@@ -31,6 +31,25 @@ class TaskController extends BaseController
 
     public function index(int $projectId, int $taskId) {
         $data = $this->taskServices->index($projectId, $taskId);
-        return view('task.index');
+        return view('task.index')->with($data);
+    }
+
+    public function addComment(int $projectId, int $taskId) {
+        return $this->taskServices->addComment($projectId, $taskId);
+    }
+
+    public function download(int $projectId, int $taskId, int $attachmentId)
+    {
+        return $this->taskServices->download($projectId , $taskId, $attachmentId);
+    }
+
+    public function deleteFile(int $projectId, int $taskId, int $attachmentId)
+    {
+        return $this->taskServices->deleteFile($projectId, $taskId, $attachmentId);
+    }
+
+    public function createComment(int $projectId, int $taskId)
+    {
+        return $this->taskServices->addComment(request()->all(), $projectId, $taskId);
     }
 }

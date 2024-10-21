@@ -25,14 +25,14 @@
                 </div>
 
                 <!-- Search button -->
-                <button type="submit" class="search-button">Tìm Kiếm</button>
+                <button type="submit" class="search-button" onclick="displayLoading()">Tìm Kiếm</button>
             </div>
             <!-- Filter Section (appears below the Filter Tasks button) -->
             <div class="filter-section" id="filter-section" style="display: none;"> <!-- Initially hidden -->
                 <!-- Assignee Filter -->
                 <div class="filter-group">
                     <label for="assignee">Người Thực Hiện</label>
-                    <div class="member-dropdown-btn" onclick="toggleDropdown('assigneeDropdown')">
+                    <div class="member-dropdown-btn" onclick="toggleDropdownBtn('assigneeDropdown')">
                         <span id="assigneeDisplay">Nguời Thực Hiện</span>
                         <span>▼</span>
                     </div>
@@ -54,7 +54,7 @@
                 <!-- Creator Filter -->
                 <div class="filter-group">
                     <label for="creator">Người Tạo</label>
-                    <div class="member-dropdown-btn" onclick="toggleDropdown('creatorDropdown')">
+                    <div class="member-dropdown-btn" onclick="toggleDropdownBtn('creatorDropdown')">
                         <span id="creatorDisplay">Người Tạo</span>
                         <span>▼</span>
                     </div>
@@ -76,7 +76,7 @@
                 <!-- Task Type Filter -->
                 <div class="filter-group">
                     <label for="task-type">Loại Công Việc</label>
-                    <div class="member-dropdown-btn" onclick="toggleDropdown('taskTypeDropdown')">
+                    <div class="member-dropdown-btn" onclick="toggleDropdownBtn('taskTypeDropdown')">
                         <span id="taskTypeDisplay">Loại Công Việc</span>
                         <span>▼</span>
                     </div>
@@ -98,7 +98,7 @@
                 <!-- Task Status Filter -->
                 <div class="filter-group">
                     <label for="task-status">Trạng Thái</label>
-                    <div class="member-dropdown-btn" onclick="toggleDropdown('taskStatusDropdown')">
+                    <div class="member-dropdown-btn" onclick="toggleDropdownBtn('taskStatusDropdown')">
                         <span id="taskStatusDisplay">Trạng Thái</span>
                         <span>▼</span>
                     </div>
@@ -134,7 +134,7 @@
             <div id="result">
                 @if(count($tasks))
                     @foreach($tasks as $task)
-                        <a href="/project/{{$projectId}}/task/{{$task['task_id']}}" id="result-item">
+                        <a href="/project/{{$projectId}}/task/{{$task['task_id']}}" id="result-item" onclick="displayLoading()">
                             <!-- Task row 1 -->
                             <div class="task-item task-item-title">
                                 <h4>{{$task['title']}}</h4>
@@ -164,7 +164,10 @@
 
     </div>
 </div>
-
+<!-- Loading Overlay and Indicator -->
+<div id="loadingOverlay">
+    <div class="lds-dual-ring"></div>
+</div>
 <!-- Include jQuery and Select2 JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
